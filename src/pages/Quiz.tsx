@@ -31,8 +31,15 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
   const [round, dispatch] = useReducer(roundReducer, undefined, () => startRound([]));
   const [active, setActive] = useState(false);
   const [retryNote, setRetryNote] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 640);
   const nextRef = useRef<HTMLButtonElement>(null);
   const outlet = useOutletContext<LessonOutletContext | null>();
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     outlet?.setIsQuizActive?.(active);
@@ -338,12 +345,12 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
             </div>
             <CircularProgress
               value={summary.total > 0 ? Math.round((summary.correct / summary.total) * 100) : 0}
-              size={84}
-              strokeWidth={8}
+              size={isMobile ? 60 : 84}
+              strokeWidth={isMobile ? 6 : 8}
               color={summary.correct / summary.total >= 0.8 ? '#10B981' : summary.correct / summary.total >= 0.5 ? '#F59E0B' : '#EF4444'}
               trackColor="#F1F5F9"
             >
-              <span style={{ fontSize: 18, fontWeight: 800, color: '#0F172A' }}>
+              <span style={{ fontSize: isMobile ? 14 : 18, fontWeight: 800, color: '#0F172A' }}>
                 {summary.total > 0 ? Math.round((summary.correct / summary.total) * 100) : 0}%
               </span>
             </CircularProgress>

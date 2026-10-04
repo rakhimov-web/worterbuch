@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, Award, ArrowRight, CheckCircle2, Sparkles, BookOpen, TrendingUp } from 'lucide-react';
 import { levelLabel, lessons } from '../data';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { useSyncExternalStore } from 'react';
+import { useSyncExternalStore, useState, useEffect } from 'react';
 import { progressStore } from '../lib/progress';
 import { CircularProgress } from '@/components/ui/circular-progress';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +10,13 @@ import { Badge } from '@/components/ui/badge';
 export function Overview() {
   usePageTitle(`${levelLabel} darslari · Wörterbuch`);
   const state = useSyncExternalStore(progressStore.subscribe, progressStore.getSnapshot, progressStore.getSnapshot);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 640);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Find last visited lesson from localStorage
   const lastVisitedSlug = (typeof window !== 'undefined' && localStorage.getItem('last_visited_lesson')) || lessons[0].slug;
@@ -42,7 +49,7 @@ export function Overview() {
   return (
     <>
       {/* Header & Level Info */}
-      <div style={{ marginBottom: 24, width: '100%' }}>
+      <div className="overview-header">
         <p className="eyebrow">
           <span>Nemis tili kursi</span>
           <span>·</span>
@@ -60,23 +67,17 @@ export function Overview() {
         <div className="stat-item">
           <CircularProgress
             value={progressPct}
-            size={68}
-            strokeWidth={7}
+            size={isMobile ? 46 : 68}
+            strokeWidth={isMobile ? 5 : 7}
             color="#2563eb"
             trackColor="#e2e8f0"
           >
-            <TrendingUp size={26} color="#2563eb" />
+            <TrendingUp size={isMobile ? 18 : 26} color="#2563eb" />
           </CircularProgress>
-          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-            <span style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.053em', color: '#64748b' }}>
-              O‘zlashtirish
-            </span>
-            <span style={{ fontSize: 21, fontWeight: 900, color: '#0f172a', marginTop: 2 }}>
-              {progressPct}%
-            </span>
-            <span style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', marginTop: 1 }}>
-              {learnedCount} / {totalWords} so‘z
-            </span>
+          <div className="stat-info">
+            <span className="stat-label">O‘zlashtirish</span>
+            <span className="stat-value">{progressPct}%</span>
+            <span className="stat-sub">{learnedCount} / {totalWords} so‘z</span>
           </div>
         </div>
 
@@ -84,23 +85,17 @@ export function Overview() {
         <div className="stat-item">
           <CircularProgress
             value={progressPct}
-            size={68}
-            strokeWidth={7}
+            size={isMobile ? 46 : 68}
+            strokeWidth={isMobile ? 5 : 7}
             color="#10b981"
             trackColor="#e2e8f0"
           >
-            <CheckCircle2 size={26} color="#10b981" />
+            <CheckCircle2 size={isMobile ? 18 : 26} color="#10b981" />
           </CircularProgress>
-          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-            <span style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.053em', color: '#64748b' }}>
-              Yodlangan
-            </span>
-            <span style={{ fontSize: 21, fontWeight: 900, color: '#0f172a', marginTop: 2 }}>
-              {learnedCount} ta
-            </span>
-            <span style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', marginTop: 1 }}>
-              faol xotirada
-            </span>
+          <div className="stat-info">
+            <span className="stat-label">Yodlangan</span>
+            <span className="stat-value">{learnedCount} ta</span>
+            <span className="stat-sub">faol xotirada</span>
           </div>
         </div>
 
@@ -108,110 +103,60 @@ export function Overview() {
         <div className="stat-item">
           <CircularProgress
             value={difficultPct}
-            size={68}
-            strokeWidth={7}
+            size={isMobile ? 46 : 68}
+            strokeWidth={isMobile ? 5 : 7}
             color="#f59e0b"
             trackColor="#e2e8f0"
           >
-            <Award size={26} color="#f59e0b" />
+            <Award size={isMobile ? 18 : 26} color="#f59e0b" />
           </CircularProgress>
-          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-            <span style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.053em', color: '#64748b' }}>
-              Qiyin so‘zlar
-            </span>
-            <span style={{ fontSize: 21, fontWeight: 900, color: '#0f172a', marginTop: 2 }}>
-              {difficultCount} ta
-            </span>
-            <span style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', marginTop: 1 }}>
-              takrorlashga
-            </span>
+          <div className="stat-info">
+            <span className="stat-label">Qiyin so‘zlar</span>
+            <span className="stat-value">{difficultCount} ta</span>
+            <span className="stat-sub">takrorlashga</span>
           </div>
         </div>
       </div>
 
       {/* Quick Resume Hero Banner (100% Width & Vertically Centered Arrow) */}
-      <div style={{ marginTop: 24, width: '100%' }}>
+      <div className="resume-hero-wrap">
         <Link
           to={`/${activeLesson.slug}/vocabulary`}
           aria-label="Davom ettirish"
-          style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 20,
-            padding: '24px 28px',
-            background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
-            border: '2px solid #1d4ed8',
-            borderBottom: '5px solid #1e40af',
-            color: '#ffffff',
-            textDecoration: 'none',
-            borderRadius: 20,
-            boxSizing: 'border-box',
-          }}
+          className="resume-hero-link"
         >
-          <div style={{ minWidth: 0, flex: 1 }}>
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '6px 14px',
-                borderRadius: 20,
-                background: 'rgba(255, 255, 255, 0.22)',
-                border: '1.5px solid rgba(255, 255, 255, 0.35)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                color: '#ffffff',
-                fontSize: 13,
-                fontWeight: 800,
-                letterSpacing: '0.02em',
-                width: 'fit-content',
-              }}
-            >
-              <Sparkles size={15} color="#ffffff" aria-hidden="true" style={{ flexShrink: 0 }} />
+          <div className="resume-hero-content">
+            <div className="resume-badge">
+              <Sparkles size={isMobile ? 13 : 15} color="#ffffff" aria-hidden="true" style={{ flexShrink: 0 }} />
               <span>{resumeBadge}</span>
             </div>
-            <h2 style={{ fontSize: 22, fontWeight: 900, marginTop: 8, color: '#ffffff', letterSpacing: '-0.015em' }}>
+            <h2 className="resume-headline">
               {resumeHeadline}
             </h2>
-            <p style={{ fontSize: 14, fontWeight: 700, color: '#bfdbfe', marginTop: 4 }}>
+            <p className="resume-subtitle">
               {resumeSubtitle}
             </p>
           </div>
 
           {/* Centered Large Arrow Icon */}
-          <div
-            style={{
-              width: 52,
-              height: 52,
-              borderRadius: 16,
-              background: 'rgba(255, 255, 255, 0.2)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              alignSelf: 'center',
-              margin: 'auto 0',
-            }}
-          >
-            <ArrowRight size={26} color="#ffffff" aria-hidden="true" />
+          <div className="resume-arrow-box">
+            <ArrowRight size={isMobile ? 20 : 26} color="#ffffff" aria-hidden="true" />
           </div>
         </Link>
       </div>
 
       {/* Darslar ro‘yxati (Curriculum List - 100% Width) */}
       <div className="section-gap">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, width: '100%' }}>
-          <h2 style={{ fontSize: 22, fontWeight: 900, color: 'var(--color-dark-heading)' }}>
+        <div className="section-header">
+          <h2 className="section-title">
             Darslar rejasi
           </h2>
-          <span style={{ fontSize: 14, fontWeight: 700, color: '#64748b' }}>
+          <span className="section-count">
             {lessons.length} ta dars mavjud
           </span>
         </div>
 
-        <ul style={{ display: 'grid', gap: 14, width: '100%' }} aria-label={`${levelLabel} darslari`}>
+        <ul className="lessons-list" aria-label={`${levelLabel} darslari`}>
           {lessons.map((l) => {
             const valid = new Set(l.entries.map((e) => e.id));
             const learned = (state.lessons[l.slug]?.learned ?? []).filter((id) => valid.has(id)).length;
@@ -220,33 +165,21 @@ export function Overview() {
             return (
               <li key={l.slug} className="lesson-card-item">
                 <Link className="lesson-link" to={`/${l.slug}/vocabulary`}>
-                  <div
-                    style={{
-                      width: 52,
-                      height: 52,
-                      borderRadius: 16,
-                      background: pct === 100 ? '#ecfdf5' : '#eff6ff',
-                      border: `2px solid ${pct === 100 ? '#a7f3d0' : '#bfdbfe'}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <BookOpen size={24} color={pct === 100 ? '#059669' : '#2563eb'} aria-hidden="true" />
+                  <div className={`lesson-icon-box ${pct === 100 ? 'is-complete' : ''}`}>
+                    <BookOpen size={isMobile ? 18 : 24} color={pct === 100 ? '#059669' : '#2563eb'} aria-hidden="true" />
                   </div>
                   <div className="grow">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div className="lesson-meta-row">
                       <h3>{l.title}</h3>
-                      <Badge variant={pct === 100 ? 'success' : 'der'}>
+                      <Badge variant={pct === 100 ? 'success' : 'der'} className="lesson-badge">
                         {pct === 100 ? 'Tugallangan 🎉' : `${pct}%`}
                       </Badge>
                     </div>
-                    <p className="lede" style={{ marginTop: 4, fontSize: 15 }}>
+                    <p className="lesson-subtext">
                       {l.entries.length} ta so‘z · {learned} tasi yodlangan
                     </p>
                   </div>
-                  <ChevronRight aria-hidden="true" />
+                  <ChevronRight aria-hidden="true" className="lesson-chevron" />
                 </Link>
               </li>
             );

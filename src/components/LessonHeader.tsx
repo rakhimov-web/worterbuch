@@ -18,7 +18,7 @@ export function LessonHeader({
   const isTest = location.pathname.endsWith("/test");
 
   return (
-    <div style={{ marginBottom: 20, width: "100%" }}>
+    <div className="lesson-header-wrap">
       <nav className="crumbs" aria-label="Sahifa yo‘li">
         <Link to="/">
           <ChevronLeft size={16} aria-hidden="true" />
