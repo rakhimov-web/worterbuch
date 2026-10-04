@@ -54,10 +54,7 @@ export function App() {
       <header className="topbar">
         <Link to="/" className="brand" aria-label="Bosh sahifa: Nemis tili lug‘ati">
           <Mark />
-          <div className="brand-text">
-            <span className="brand-title">Wörterbuch</span>
-            <span className="brand-subtitle">Nemis tili</span>
-          </div>
+          <span className="brand-title">Wörterbuch</span>
         </Link>
         <div className="topbar-badge" title="Dars darajasi">
           <Flame size={18} color="#f59e0b" aria-hidden="true" />

@@ -157,9 +157,9 @@ function VocabularyView({ lesson, hideHeader = false }: { lesson: Lesson; hideHe
 
   const setFilter = (f: Filter) => setParams(f === 'all' ? {} : { filter: f }, { replace: true });
   const filters: [Filter, string][] = [
-    ['all', 'Hammasi'],
-    ['todo', 'Yodlanmagan'],
-    ['difficult', 'Qiyin'],
+    ['all', 'Barcha so‘zlar'],
+    ['todo', 'Yodlanmaganlar'],
+    ['difficult', 'Qiyin so‘zlar'],
   ];
 
   return (
@@ -192,7 +192,7 @@ function VocabularyView({ lesson, hideHeader = false }: { lesson: Lesson; hideHe
         <div className="filters" role="group" aria-label="Filtr">
           {filters.map(([f, label]) => (
             <button key={f} type="button" className="pill" aria-pressed={filter === f} onClick={() => setFilter(f)}>
-              {label} <span className="count">{counts[f]}</span>
+              <span>{label}</span> <span className="count">({counts[f]})</span>
             </button>
           ))}
         </div>

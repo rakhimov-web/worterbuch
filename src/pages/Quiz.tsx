@@ -189,10 +189,11 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
 
           <p className="quiet">Har bir so‘z testda bir martadan so‘raladi: {scopeIds.length} ta savol.</p>
 
-          <div className="actions">
+          <div className="actions" style={{ width: '100%' }}>
             <button
               type="button"
               className="btn"
+              style={{ width: '100%' }}
               disabled={scopeIds.length === 0}
               onClick={() => begin(scopeIds)}
             >
@@ -295,7 +296,7 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
 
           <p className="quiet">
             Test davomida belgilangan so‘zlar saqlanadi.{' '}
-            <Link to={`/${lesson.slug}/vocabulary`} className="quiz-return-badge">
+            <Link to={`/${lesson.slug}/vocabulary`} className="quiz-return-link">
               So‘zlarga qaytish
             </Link>{' '}
             testni boshidan boshlaydi.
