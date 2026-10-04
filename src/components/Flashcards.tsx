@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Volume2, RotateCw, ChevronLeft, ChevronRight, Check, Flag } from 'lucide-react';
 import type { VocabEntry } from '../data';
-import { speechText } from '../lib/speech';
+import { preloadGermanAudio, speechText } from '../lib/speech';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -27,6 +27,17 @@ export function Flashcards({
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
 
+  const current = entries[Math.min(index, entries.length - 1)];
+
+  useEffect(() => {
+    if (!current) return;
+    preloadGermanAudio(speechText(current.de, current.speak));
+    const nextEntry = entries[(index + 1) % entries.length];
+    if (nextEntry) {
+      preloadGermanAudio(speechText(nextEntry.de, nextEntry.speak));
+    }
+  }, [current, index, entries]);
+
   if (entries.length === 0) {
     return (
       <div className="empty">
@@ -36,7 +47,6 @@ export function Flashcards({
     );
   }
 
-  const current = entries[Math.min(index, entries.length - 1)];
   const isLearned = learned.has(current.id);
   const isDifficult = difficult.has(current.id);
 

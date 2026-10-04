@@ -5,6 +5,8 @@ import { lektion3 } from './lessons/a1-1-lektion-3';
 import { lektion4 } from './lessons/a1-1-lektion-4';
 import { lektion5 } from './lessons/a1-1-lektion-5';
 import { lektion6 } from './lessons/a1-1-lektion-6';
+import { lektion7 } from './lessons/a1-1-lektion-7';
+import { lektion8 } from './lessons/a1-1-lektion-8';
 import { lektion9 } from './lessons/a1-1-lektion-9';
 
 /** Add new lessons here; routing, overview, vocabulary and quiz pick them up automatically. */
@@ -15,6 +17,8 @@ export const lessons: Lesson[] = [
   lektion4,
   lektion5,
   lektion6,
+  lektion7,
+  lektion8,
   lektion9,
 ];
 

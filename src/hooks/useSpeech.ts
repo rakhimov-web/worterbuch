@@ -1,63 +1,72 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { isSpeechSupported, pickGermanVoice } from '../lib/speech';
+import { isSpeechSupported, pickGermanVoice, playGermanAudio, stopCurrentAudio } from '../lib/speech';
 
 export function useSpeech() {
   const supported = isSpeechSupported();
-  const [voice, setVoice] = useState<SpeechSynthesisVoice | null>(null);
-  const [voicesLoaded, setVoicesLoaded] = useState(false);
+  const [localVoice, setLocalVoice] = useState<SpeechSynthesisVoice | null>(null);
   const [speakingId, setSpeakingId] = useState<string | null>(null);
   const token = useRef(0);
+  const cancelCurrent = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    if (!supported) return;
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
     const synth = window.speechSynthesis;
-    const tokenRef = token;
     const load = () => {
-      const voices = synth.getVoices();
-      if (voices.length > 0) {
-        setVoice(pickGermanVoice(voices));
-        setVoicesLoaded(true);
+      try {
+        const voices = synth.getVoices();
+        if (voices && voices.length > 0) {
+          setLocalVoice(pickGermanVoice(voices));
+        }
+      } catch {
+        // ignore
       }
     };
     load();
     synth.addEventListener('voiceschanged', load);
     return () => {
       synth.removeEventListener('voiceschanged', load);
-      tokenRef.current++;
-      synth.cancel();
+      stopCurrentAudio();
     };
-  }, [supported]);
+  }, []);
 
   const stop = useCallback(() => {
     token.current++;
-    if (supported) window.speechSynthesis.cancel();
+    if (cancelCurrent.current) {
+      cancelCurrent.current();
+      cancelCurrent.current = null;
+    }
+    stopCurrentAudio();
     setSpeakingId(null);
-  }, [supported]);
+  }, []);
 
   const speak = useCallback(
     (id: string, text: string, rate = 0.9) => {
-      if (!supported) return;
-      const synth = window.speechSynthesis;
       const mine = ++token.current;
-      synth.cancel(); // never overlap: the previous utterance is dropped
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'de-DE';
-      u.rate = rate;
-      u.pitch = 1;
-      if (voice) u.voice = voice;
-      const done = () => {
-        if (token.current === mine) setSpeakingId(null);
-      };
-      u.onstart = () => {
-        if (token.current === mine) setSpeakingId(id);
-      };
-      u.onend = done;
-      u.onerror = done;
+      if (cancelCurrent.current) {
+        cancelCurrent.current();
+      }
       setSpeakingId(id);
-      synth.speak(u);
+
+      cancelCurrent.current = playGermanAudio(
+        text,
+        () => {
+          if (token.current === mine) setSpeakingId(id);
+        },
+        () => {
+          if (token.current === mine) setSpeakingId(null);
+        },
+        rate,
+        localVoice,
+      );
     },
-    [supported, voice],
+    [localVoice],
   );
 
-  return { supported, speak, stop, speakingId, missingGermanVoice: supported && voicesLoaded && !voice };
+  return {
+    supported,
+    speak,
+    stop,
+    speakingId,
+    missingGermanVoice: false,
+  };
 }

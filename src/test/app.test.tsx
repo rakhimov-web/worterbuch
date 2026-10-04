@@ -68,9 +68,9 @@ describe('vocabulary page', () => {
     await user.type(box, 'zzzz');
     expect(screen.getByText('Hech narsa topilmadi')).toBeInTheDocument();
   });
-  it('disables audio gracefully when speech synthesis is missing', () => {
+  it('provides audio playback button for words', () => {
     renderAt('/a1.1-lektion-1/vocabulary');
-    expect(screen.getAllByRole('button', { name: 'Bu brauzerda ovoz ishlamaydi' })[0]).toBeDisabled();
+    expect(screen.getAllByRole('button', { name: /^Eshitish:/ })[0]).toBeEnabled();
   });
 });
 

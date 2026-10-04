@@ -1,6 +1,6 @@
 import { createProgressStore, parseProgress, STORAGE_KEY } from './progress';
 import { matchesQuery, normalize } from './search';
-import { pickGermanVoice, speechText } from './speech';
+import { getGermanAudioUrl, isSpeechSupported, pickGermanVoice, speechText } from './speech';
 
 const memory = () => {
   const m = new Map<string, string>();
@@ -59,5 +59,10 @@ describe('speech helpers', () => {
     expect(speechText('das Land, ¨-er')).toBe('das Land');
     expect(speechText('heißt (heißen)')).toBe('heißt');
     expect(speechText('x', 'override')).toBe('override');
+  });
+  it('generates German audio URL for online studio pronunciation', () => {
+    expect(getGermanAudioUrl('Guten Tag')).toContain('tl=de');
+    expect(getGermanAudioUrl('Guten Tag')).toContain(encodeURIComponent('Guten Tag'));
+    expect(isSpeechSupported()).toBe(true);
   });
 });

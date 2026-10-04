@@ -6,7 +6,7 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { useProgress } from '../hooks/useProgress';
 import { useSpeech } from '../hooks/useSpeech';
 import { matchesQuery } from '../lib/search';
-import { speechText } from '../lib/speech';
+import { preloadGermanAudio, preloadGermanAudios, speechText } from '../lib/speech';
 import { LessonHeader } from '../components/LessonHeader';
 import { AudioButton } from '../components/AudioButton';
 import { Flashcards } from '../components/Flashcards';
@@ -101,6 +101,7 @@ function WordRow({ entry, learned, difficult, speakingId, speechSupported, onSpe
           label={entry.de}
           supported={speechSupported}
           speaking={speakingId === entry.id}
+          onPreload={() => preloadGermanAudio(speechText(entry.de, entry.speak))}
           onPlay={() => onSpeak(entry)}
         />
         <button
@@ -132,7 +133,7 @@ function VocabularyView({ lesson, hideHeader = false }: { lesson: Lesson; hideHe
   usePageTitle(`${lesson.level} ${lesson.title} · So‘zlar`);
   const ids = useMemo(() => lesson.entries.map((e) => e.id), [lesson]);
   const { learned, difficult, toggle } = useProgress(lesson.slug, ids);
-  const { supported, speak, speakingId, missingGermanVoice } = useSpeech();
+  const { supported, speak, speakingId } = useSpeech();
   const [params, setParams] = useSearchParams();
   const filter = parseFilter(params.get('filter'));
   const [query, setQuery] = useState('');
@@ -156,6 +157,14 @@ function VocabularyView({ lesson, hideHeader = false }: { lesson: Lesson; hideHe
       }),
     [lesson, filter, learned, difficult, query],
   );
+
+  useEffect(() => {
+    const texts = visible.slice(0, 30).map((e) => speechText(e.de, e.speak));
+    const timer = setTimeout(() => {
+      preloadGermanAudios(texts);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [visible]);
 
   const setFilter = (f: Filter) => setParams(f === 'all' ? {} : { filter: f }, { replace: true });
   const filters: [Filter, string][] = [
@@ -229,12 +238,6 @@ function VocabularyView({ lesson, hideHeader = false }: { lesson: Lesson; hideHe
           </button>
         </div>
       </div>
-
-      {missingGermanVoice && (
-        <p className="note" role="note">
-          Qurilmangizda nemis ovozi topilmadi, shuning uchun talaffuz boshqacha eshitilishi mumkin. Qurilma sozlamalaridan nemis tilini qo‘shing.
-        </p>
-      )}
 
       <p className="sr-only" role="status" aria-live="polite">
         {visible.length} ta so‘z ko‘rsatilmoqda

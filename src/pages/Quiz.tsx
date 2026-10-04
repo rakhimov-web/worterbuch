@@ -6,7 +6,7 @@ import { getLesson, type Lesson } from '../data';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useProgress } from '../hooks/useProgress';
 import { useSpeech } from '../hooks/useSpeech';
-import { speechText } from '../lib/speech';
+import { preloadGermanAudio, speechText } from '../lib/speech';
 import { buildRound, roundReducer, startRound, summarize, MIN_LESSON_WORDS, type DirectionMode } from '../quiz/engine';
 import { LessonHeader } from '../components/LessonHeader';
 import { AudioButton } from '../components/AudioButton';
@@ -105,6 +105,16 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
     }
   }, [round.phase, round.index, round]);
 
+  const q = round.questions[round.index];
+
+  useEffect(() => {
+    if (!q) return;
+    const entry = byId.get(q.entryId);
+    if (entry) {
+      preloadGermanAudio(speechText(entry.de, entry.speak));
+    }
+  }, [q, byId]);
+
   const begin = (wordIds: string[], note = false) => {
     stop();
     const questions = buildRound(lesson.entries, wordIds, mode);
@@ -127,7 +137,6 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
   }
 
   const summary = summarize(round);
-  const q = round.questions[round.index];
   const answer = q ? round.answers[q.id] : undefined;
   const scopes: [Scope, string, number][] = [
     ['all', 'Barcha so‘zlar', ids.length],
@@ -230,6 +239,10 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
                   label={q.prompt}
                   supported={supported}
                   speaking={speakingId === q.entryId}
+                  onPreload={() => {
+                    const e = byId.get(q.entryId);
+                    if (e) preloadGermanAudio(speechText(e.de, e.speak));
+                  }}
                   onPlay={() => {
                     const e = byId.get(q.entryId)!;
                     speak(e.id, speechText(e.de, e.speak));
