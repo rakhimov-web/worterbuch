@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Flame } from 'lucide-react';
 import { Overview } from './pages/Overview';
 import { Vocabulary } from './pages/Vocabulary';
 import { Quiz } from './pages/Quiz';
 import { NotFound } from './pages/NotFound';
-import { lessons } from './data';
+import { lessons, getLesson } from './data';
 
 export function Mark() {
   return (
@@ -36,6 +36,12 @@ export function Mark() {
   );
 }
 
+function LessonRedirect() {
+  const { slug } = useParams();
+  const lesson = getLesson(slug);
+  return lesson ? <Navigate to={`/${lesson.slug}/vocabulary`} replace /> : <NotFound />;
+}
+
 export function App() {
   const { pathname } = useLocation();
   const reduce = useReducedMotion();
@@ -50,6 +56,9 @@ export function App() {
     document.querySelector<HTMLElement>('main h1')?.focus({ preventScroll: true });
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  // Lesson-level key ensures smooth tab switching without remounting the entire view
+  const transitionKey = pathname === '/' ? 'home' : pathname.split('/')[1] || 'root';
 
   return (
     <div className="shell">
@@ -69,7 +78,7 @@ export function App() {
       </header>
       <main id="main">
         <motion.div
-          key={pathname}
+          key={transitionKey}
           initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: reduce ? 0 : 0.15 }}
@@ -81,6 +90,7 @@ export function App() {
             ))}
             <Route path="/:slug/vocabulary" element={<Vocabulary />} />
             <Route path="/:slug/test" element={<Quiz />} />
+            <Route path="/:slug" element={<LessonRedirect />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </motion.div>
