@@ -1,7 +1,6 @@
 import { useMemo, useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Check, Flag, Search, X, List, Layers } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { getLesson, type Lesson, type VocabEntry } from '../data';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useProgress } from '../hooks/useProgress';
@@ -198,13 +197,6 @@ function VocabularyView({ lesson }: { lesson: Lesson }) {
             aria-label="Ro‘yxat ko‘rinishi"
             title="Ro‘yxat"
           >
-            {view === 'list' && (
-              <motion.span
-                layoutId="activeVocabView"
-                className="view-btn-indicator"
-                transition={{ type: 'spring', stiffness: 500, damping: 36 }}
-              />
-            )}
             <List size={15} aria-hidden="true" />
             <span>Ro‘yxat</span>
           </button>
@@ -215,13 +207,6 @@ function VocabularyView({ lesson }: { lesson: Lesson }) {
             aria-label="Kartochkalar ko‘rinishi"
             title="Kartochkalar"
           >
-            {view === 'cards' && (
-              <motion.span
-                layoutId="activeVocabView"
-                className="view-btn-indicator"
-                transition={{ type: 'spring', stiffness: 500, damping: 36 }}
-              />
-            )}
             <Layers size={15} aria-hidden="true" />
             <span>Kartochkalar</span>
           </button>

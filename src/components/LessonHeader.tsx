@@ -1,6 +1,5 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { ChevronLeft, BookOpen, CheckCircle2 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import type { Lesson } from '../data';
 
 export function LessonHeader({
@@ -34,24 +33,10 @@ export function LessonHeader({
 
       <nav className="ios-segmented-control" aria-label="Bo‘lim">
         <NavLink className={`seg-item${isVocab ? ' is-active' : ''}`} to={`/${lesson.slug}/vocabulary`}>
-          {isVocab && (
-            <motion.span
-              layoutId="activeLessonTab"
-              className="seg-indicator"
-              transition={{ type: 'spring', stiffness: 500, damping: 36 }}
-            />
-          )}
           <BookOpen size={16} aria-hidden="true" />
           <span>So‘zlar</span>
         </NavLink>
         <NavLink className={`seg-item${isTest ? ' is-active' : ''}`} to={`/${lesson.slug}/test`}>
-          {isTest && (
-            <motion.span
-              layoutId="activeLessonTab"
-              className="seg-indicator"
-              transition={{ type: 'spring', stiffness: 500, damping: 36 }}
-            />
-          )}
           <CheckCircle2 size={16} aria-hidden="true" />
           <span>Test</span>
         </NavLink>

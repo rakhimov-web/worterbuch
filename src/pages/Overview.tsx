@@ -29,10 +29,10 @@ export function Overview() {
 
   const resumeBadge = isCompleted ? 'Mustahkamlang 🎉' : isStarted ? 'Davom ettirish' : 'Boshlash';
   const resumeHeadline = isCompleted
-    ? 'A1.1 Kursi — Bilimingizni mustahkamlang'
+    ? `${activeLesson.title} — Bilimingizni mustahkamlang`
     : isStarted
-    ? 'A1.1 Kursi — O‘rganishda davom eting'
-    : 'A1.1 Kursi — O‘rganishni boshlang';
+    ? `${activeLesson.title} — O‘rganishda davom eting`
+    : `${activeLesson.title} — O‘rganishni boshlang`;
   const resumeSubtitle = isCompleted
     ? 'Barcha so‘zlar yodlangan, testda o‘zingizni sinang!'
     : isStarted
@@ -135,6 +135,7 @@ export function Overview() {
       <div style={{ marginTop: 24, width: '100%' }}>
         <Link
           to={`/${activeLesson.slug}/vocabulary`}
+          aria-label="Davom ettirish"
           style={{
             width: '100%',
             display: 'flex',
@@ -177,6 +178,8 @@ export function Overview() {
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
+              alignSelf: 'center',
+              margin: 'auto 0',
             }}
           >
             <ArrowRight size={26} color="#ffffff" aria-hidden="true" />

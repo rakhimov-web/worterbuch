@@ -320,18 +320,22 @@ main {
   background: #f1f5f9;
   border: 2px solid var(--color-border);
   border-radius: 16px;
+  padding: 4px;
   margin-top: 20px;
   gap: 6px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .seg-item {
   position: relative;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 44px;
+  min-height: 46px;
+  padding: 8px 16px;
   border-radius: 12px;
   font-size: 15px;
   font-weight: 800;
@@ -339,29 +343,26 @@ main {
   letter-spacing: 0.053em;
   color: var(--color-pencil-gray);
   text-decoration: none;
-  transition: color 0.15s ease;
-  z-index: 2;
+  background: transparent;
+  border: 2px solid transparent;
+  border-bottom: 3.5px solid transparent;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
 }
 
-.seg-item.is-active {
+.seg-item.is-active,
+.seg-item.active {
+  background: var(--color-paper-white);
   color: var(--color-primary);
+  border-color: var(--color-border);
+  border-bottom-color: var(--color-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .seg-item span,
 .seg-item svg {
   position: relative;
   z-index: 2;
-}
-
-.seg-indicator {
-  position: absolute;
-  inset: 0;
-  background: var(--color-paper-white);
-  border: 2px solid var(--color-border);
-  border-bottom: 3.5px solid var(--color-border);
-  border-radius: 12px;
-  z-index: 1;
-  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -608,29 +609,25 @@ input[type="search"]::-webkit-search-results-decoration {
   text-transform: uppercase;
   letter-spacing: 0.053em;
   color: var(--color-pencil-gray);
-  transition: color 0.15s ease;
+  background: transparent;
+  border: 1.5px solid transparent;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.15s ease;
   z-index: 2;
 }
 
 .view-btn.active {
+  background: var(--color-paper-white);
   color: var(--color-dark-heading);
+  border-color: var(--color-border);
+  border-bottom-color: var(--color-primary);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 .view-btn span,
 .view-btn svg {
   position: relative;
   z-index: 2;
-}
-
-.view-btn-indicator {
-  position: absolute;
-  inset: 0;
-  background: var(--color-paper-white);
-  border: 1.5px solid var(--color-border);
-  border-bottom: 2.5px solid var(--color-border);
-  border-radius: 10px;
-  z-index: 1;
-  pointer-events: none;
 }
 
 .note {
@@ -911,6 +908,29 @@ input[type="search"]::-webkit-search-results-decoration {
   border-bottom: 4px solid var(--color-border);
   border-radius: 20px;
   box-sizing: border-box;
+}
+
+.circular-progress-wrap {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.circular-progress-inner {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .stats-grid {

@@ -26,14 +26,27 @@ export function CircularProgress({
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center shrink-0 ${className}`}
-      style={{ width: size, height: size }}
+      className={`circular-progress-wrap ${className}`}
+      style={{
+        position: 'relative',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: size,
+        height: size,
+        minWidth: size,
+        minHeight: size,
+        flexShrink: 0,
+      }}
     >
       <svg
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
-        className="transform -rotate-90"
+        style={{
+          transform: 'rotate(-90deg)',
+          display: 'block',
+        }}
         aria-hidden="true"
       >
         {/* Background Track */}
@@ -62,9 +75,24 @@ export function CircularProgress({
           }}
         />
       </svg>
-      {/* Center Content */}
+      {/* Center Content Strictly Centered */}
       {children && (
-        <div className="absolute inset-0 flex items-center justify-center text-center font-extrabold">
+        <div
+          className="circular-progress-inner"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            fontWeight: 900,
+            pointerEvents: 'none',
+          }}
+        >
           {children}
         </div>
       )}
