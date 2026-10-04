@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ChevronRight, Award, ArrowRight, Lock, CheckCircle2, Sparkles, BookOpen, TrendingUp } from 'lucide-react';
+import { ChevronRight, Award, ArrowRight, CheckCircle2, Sparkles, BookOpen, TrendingUp } from 'lucide-react';
 import { levelLabel, lessons } from '../data';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useSyncExternalStore } from 'react';
@@ -207,7 +207,7 @@ export function Overview() {
             Darslar rejasi
           </h2>
           <span style={{ fontSize: 14, fontWeight: 700, color: '#64748b' }}>
-            1 ta dars mavjud
+            {lessons.length} ta dars mavjud
           </span>
         </div>
 
@@ -251,41 +251,8 @@ export function Overview() {
               </li>
             );
           })}
-
-          {/* Upcoming lesson */}
-          <li className="lesson-card-item" style={{ opacity: 0.65, background: '#f8fafc' }}>
-            <div className="lesson-link" style={{ cursor: 'default' }}>
-              <div
-                style={{
-                  width: 52,
-                  height: 52,
-                  borderRadius: 16,
-                  background: '#f1f5f9',
-                  border: '2px solid #e2e8f0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}
-              >
-                <Lock size={22} color="#94a3b8" aria-hidden="true" />
-              </div>
-              <div className="grow">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <h3 style={{ color: '#64748b' }}>Lektion 2: Freunde, Kollegen und ich</h3>
-                  <Badge variant="secondary">Tez kunda</Badge>
-                </div>
-                <p className="lede" style={{ marginTop: 4, fontSize: 14 }}>
-                  Kasalxona, ish, tanishuv mavzulari
-                </p>
-              </div>
-              <Lock size={20} color="#94a3b8" aria-hidden="true" />
-            </div>
-          </li>
         </ul>
       </div>
-
-      <p className="quiet">Keyingi darslar tayyor bo‘lgach shu yerda paydo bo‘ladi.</p>
     </>
   );
 }

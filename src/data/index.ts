@@ -1,8 +1,20 @@
 import type { Lesson } from './types';
 import { lektion1 } from './lessons/a1-1-lektion-1';
+import { lektion2 } from './lessons/a1-1-lektion-2';
+import { lektion3 } from './lessons/a1-1-lektion-3';
+import { lektion4 } from './lessons/a1-1-lektion-4';
+import { lektion5 } from './lessons/a1-1-lektion-5';
+import { lektion6 } from './lessons/a1-1-lektion-6';
 
 /** Add new lessons here; routing, overview, vocabulary and quiz pick them up automatically. */
-export const lessons: Lesson[] = [lektion1];
+export const lessons: Lesson[] = [
+  lektion1,
+  lektion2,
+  lektion3,
+  lektion4,
+  lektion5,
+  lektion6,
+];
 
 export const levelLabel = 'A1.1';
 

@@ -1,4 +1,4 @@
-export type WordKind = 'noun' | 'verb' | 'pronoun' | 'phrase' | 'word' | 'country';
+export type WordKind = 'noun' | 'verb' | 'pronoun' | 'phrase' | 'word' | 'country' | 'adjective' | 'number';
 
 export interface VocabEntry {
   /** Stable ID. Never change after release: saved progress is keyed by it. */

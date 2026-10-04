@@ -24,6 +24,8 @@ const KIND_LABELS: Record<string, string> = {
   phrase: 'Ibora',
   pronoun: 'Olmosh',
   country: 'Davlat',
+  adjective: 'Sifat',
+  number: 'Son',
 };
 
 function GermanWord({ text }: { text: string }) {
