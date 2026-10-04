@@ -1258,12 +1258,26 @@ legend {
   background: #e2e8f0;
 }
 
-/* Quiz Question Container (Strict 100% Width & Flush with Shell 20px Gutter) */
+/* Quiz Active Section (Generous Top & Bottom Spacing) */
+.quiz-active-section {
+  width: 100%;
+  margin-top: 28px;
+  padding-top: 8px;
+  padding-bottom: 72px;
+  box-sizing: border-box;
+}
+
+.quiz-active-section .progress {
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 28px;
+}
+
 .quiz-question-box {
   width: 100%;
   max-width: 100%;
   padding: 0;
-  margin-top: 20px;
+  margin-top: 0;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -1273,7 +1287,7 @@ legend {
 .quiz-question-box .actions,
 .q-card .actions {
   width: 100%;
-  margin-top: 24px;
+  margin-top: 32px;
 }
 
 .quiz-question-box .actions .btn,
@@ -1281,11 +1295,17 @@ legend {
   width: 100%;
 }
 
+.quiz-active-section .quiet {
+  margin-top: 28px;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
 .q-card {
   width: 100%;
   max-width: 100%;
   padding: 0;
-  margin-top: 20px;
+  margin-top: 28px;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -1295,8 +1315,9 @@ legend {
 .q-result-card {
   width: 100%;
   max-width: 100%;
-  padding: 24px 20px;
-  margin-top: 20px;
+  padding: 28px 24px;
+  margin-top: 28px;
+  margin-bottom: 64px;
   box-sizing: border-box;
 }
 
@@ -1313,8 +1334,8 @@ legend {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-top: 10px;
-  padding-bottom: 16px;
+  margin-top: 12px;
+  padding-bottom: 18px;
   border-bottom: 2px solid var(--color-border);
 }
 
@@ -1331,7 +1352,7 @@ legend {
   width: 100%;
   display: grid;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .choice {

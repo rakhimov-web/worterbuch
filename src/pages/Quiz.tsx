@@ -203,7 +203,7 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
       )}
 
       {active && round.phase !== 'done' && q && (
-        <section aria-labelledby="q-h" style={{ width: '100%' }}>
+        <section aria-labelledby="q-h" className="quiz-active-section">
           <div className="progress">
             <div className="progress-text">
               <span>
