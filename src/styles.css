@@ -2153,37 +2153,37 @@ legend {
     border-radius: 9px;
   }
 
-  /* Word Row Card (Spacious, breathing 1-row card) */
+  /* Word Row Card (Bottom actions on mobile so words have 100% breathing room) */
   .words {
-    gap: 12px;
+    gap: 14px;
     margin-top: 18px;
   }
   .word {
     display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    padding: 14px 16px !important;
-    border-radius: 16px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    padding: 16px 16px 14px !important;
+    border-radius: 18px !important;
     border-width: 1.5px !important;
     border-bottom-width: 3.5px !important;
-    gap: 14px !important;
-    min-height: 64px !important;
+    gap: 12px !important;
+    min-height: auto !important;
   }
   .word.is-difficult {
     border-left-width: 5px !important;
   }
   .word-content {
-    flex: 1 !important;
+    width: 100% !important;
     min-width: 0 !important;
   }
   .de {
-    font-size: 17px !important;
+    font-size: 18px !important;
     gap: 8px !important;
     line-height: 1.25 !important;
   }
   .de-text {
-    font-size: 17px !important;
+    font-size: 18px !important;
   }
   .article-pill {
     font-size: 11px !important;
@@ -2192,29 +2192,29 @@ legend {
     border-width: 1px !important;
   }
   .uz {
-    font-size: 14px !important;
-    margin-top: 4px !important;
+    font-size: 15px !important;
+    margin-top: 5px !important;
     line-height: 1.35 !important;
   }
   .pron {
-    font-size: 11.5px !important;
-    margin-top: 4px !important;
+    font-size: 12px !important;
+    margin-top: 5px !important;
     gap: 5px !important;
   }
   .pron-label {
     font-size: 11px !important;
   }
   .pron-val {
-    font-size: 11px !important;
-    padding: 1px 6px !important;
+    font-size: 11.5px !important;
+    padding: 1.5px 6.5px !important;
   }
   .tags {
-    margin-top: 7px !important;
+    margin-top: 8px !important;
     gap: 6px !important;
   }
   .status-badge {
-    font-size: 10.5px !important;
-    padding: 3px 8px !important;
+    font-size: 11px !important;
+    padding: 3.5px 9px !important;
   }
   .status-badge svg {
     width: 12px !important;
@@ -2223,22 +2223,29 @@ legend {
   .row-actions {
     display: flex !important;
     align-items: center !important;
-    gap: 7px !important;
-    margin-top: 0 !important;
-    border-top: none !important;
-    padding-top: 0 !important;
-    flex-shrink: 0 !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    margin-top: 2px !important;
+    padding-top: 11px !important;
+    border-top: 1.5px solid #f1f5f9 !important;
+    width: 100% !important;
+  }
+  .word.is-learned .row-actions {
+    border-top-color: #dcfce7 !important;
+  }
+  .row-actions > :first-child {
+    margin-right: auto !important;
   }
   .icon-btn {
-    width: 38px !important;
-    height: 38px !important;
-    border-radius: 12px !important;
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 13px !important;
     border-width: 1.5px !important;
-    border-bottom-width: 2.5px !important;
+    border-bottom-width: 3px !important;
   }
   .icon-btn svg {
-    width: 18px !important;
-    height: 18px !important;
+    width: 19px !important;
+    height: 19px !important;
   }
 
   /* Buttons */
@@ -2445,33 +2452,36 @@ legend {
 
   /* Words */
   .words {
-    gap: 10px;
+    gap: 12px;
   }
   .word {
-    padding: 12px 14px !important;
+    padding: 14px 14px 12px !important;
     gap: 10px !important;
-    border-radius: 14px !important;
+    border-radius: 16px !important;
   }
   .de {
-    font-size: 16px !important;
+    font-size: 16.5px !important;
   }
   .de-text {
-    font-size: 16px !important;
+    font-size: 16.5px !important;
   }
   .uz {
-    font-size: 13px !important;
+    font-size: 14px !important;
   }
   .row-actions {
-    gap: 6px !important;
+    gap: 7px !important;
+    padding-top: 9px !important;
+    margin-top: 2px !important;
   }
   .icon-btn {
-    width: 35px !important;
-    height: 35px !important;
-    border-radius: 10px !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 11px !important;
+    border-bottom-width: 2.5px !important;
   }
   .icon-btn svg {
-    width: 16px !important;
-    height: 16px !important;
+    width: 17px !important;
+    height: 17px !important;
   }
 
   /* Flashcards */
