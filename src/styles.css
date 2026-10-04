@@ -540,9 +540,11 @@ input[type="search"]::-webkit-search-results-decoration {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.15s ease;
+  transition: all 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
   cursor: pointer;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .pill::before {
@@ -554,7 +556,7 @@ input[type="search"]::-webkit-search-results-decoration {
   border: 2px solid #94a3b8;
   margin-right: 4px;
   background: var(--color-paper-white);
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex: none;
   box-sizing: border-box;
 }
@@ -567,8 +569,8 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .pill:active {
-  border-bottom-width: 2px;
-  transform: translateY(1.5px);
+  border-bottom-width: 2px !important;
+  transform: translateY(2px) !important;
 }
 
 .pill[aria-pressed='true'] {
@@ -576,12 +578,14 @@ input[type="search"]::-webkit-search-results-decoration {
   color: var(--color-primary);
   border-color: var(--color-primary-border);
   border-bottom-color: var(--color-primary);
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.1);
 }
 
 .pill[aria-pressed='true']::before {
   border-color: var(--color-primary);
   background: var(--color-primary);
   box-shadow: inset 0 0 0 3.5px #ffffff;
+  transform: scale(1.08);
 }
 
 .pill .count {
@@ -1167,6 +1171,8 @@ legend {
 
 .radio-row label {
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .radio-row input {
@@ -1188,7 +1194,8 @@ legend {
   font-size: 15px;
   font-weight: 800;
   color: var(--color-dark-heading);
-  transition: all 0.15s ease;
+  transition: all 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
+  box-sizing: border-box;
 }
 
 .radio-row span::before {
@@ -1198,24 +1205,41 @@ legend {
   height: 18px;
   border-radius: 50%;
   border: 2px solid #94a3b8;
-  margin-right: 10px;
+  margin-right: 8px;
   background: var(--color-paper-white);
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex: none;
   box-sizing: border-box;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .radio-row label:hover:not(:has(input:disabled)) span {
+    border-color: var(--color-border-hover);
+    background: #f8fafc;
+  }
+}
+
+/* Active press animation matching .pill:active */
+.radio-row label:active:not(:has(input:disabled)) span,
+.radio-row input:active:not(:disabled) + span {
+  border-bottom-width: 2px !important;
+  transform: translateY(2px) !important;
+}
+
+/* Active checked state matching .pill[aria-pressed='true'] */
 .radio-row input:checked + span {
   background: var(--color-primary-soft);
   color: var(--color-primary);
   border-color: var(--color-primary-border);
   border-bottom-color: var(--color-primary);
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.1);
 }
 
 .radio-row input:checked + span::before {
   border-color: var(--color-primary);
   background: var(--color-primary);
   box-shadow: inset 0 0 0 3.5px #ffffff;
+  transform: scale(1.08);
 }
 
 .radio-row input:focus-visible + span {
@@ -1234,7 +1258,41 @@ legend {
   background: #e2e8f0;
 }
 
+/* Quiz Question Container (Strict 100% Width & Flush with Shell 20px Gutter) */
+.quiz-question-box {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin-top: 20px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+
+.quiz-question-box .actions,
+.q-card .actions {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.quiz-question-box .actions .btn,
+.q-card .actions .btn {
+  width: 100%;
+}
+
 .q-card {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin-top: 20px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+
+.q-result-card {
   width: 100%;
   max-width: 100%;
   padding: 24px 20px;

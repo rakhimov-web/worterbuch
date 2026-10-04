@@ -11,7 +11,6 @@ import { buildRound, roundReducer, startRound, summarize, MIN_LESSON_WORDS, type
 import { LessonHeader } from '../components/LessonHeader';
 import { AudioButton } from '../components/AudioButton';
 import { CircularProgress } from '@/components/ui/circular-progress';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { NotFound } from './NotFound';
 import type { LessonOutletContext } from './LessonLayout';
@@ -217,7 +216,7 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
             </div>
           </div>
 
-          <Card className="q-card">
+          <div className="quiz-question-box">
             <p className="q-label">
               {q.direction === 'de-uz' ? 'Bu so‘z o‘zbekchada nima?' : 'Bu nemischada qanday aytiladi?'}
             </p>
@@ -280,11 +279,12 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
               )}
             </div>
 
-            <div className="actions">
+            <div className="actions" style={{ width: '100%' }}>
               <button
                 ref={nextRef}
                 type="button"
-                className="btn"
+                className="btn block"
+                style={{ width: '100%' }}
                 disabled={!answer}
                 onClick={() => dispatch({ type: 'next' })}
               >
@@ -292,7 +292,7 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
                 <ArrowRight aria-hidden="true" />
               </button>
             </div>
-          </Card>
+          </div>
 
           <p className="quiet">
             Test davomida belgilangan so‘zlar saqlanadi.{' '}
@@ -305,7 +305,7 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
       )}
 
       {active && round.phase === 'done' && (
-        <section aria-labelledby="res-h" className="card q-card" style={{ width: '100%' }}>
+        <section aria-labelledby="res-h" className="card q-result-card" style={{ width: '100%' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
             <div>
               <h2 id="res-h" className="eyebrow">

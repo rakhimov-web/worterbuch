@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ChevronRight, Award, ArrowRight, Lock, CheckCircle2, Sparkles, BookOpen } from 'lucide-react';
+import { ChevronRight, Award, ArrowRight, Lock, CheckCircle2, Sparkles, BookOpen, TrendingUp } from 'lucide-react';
 import { levelLabel, lessons } from '../data';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useSyncExternalStore } from 'react';
@@ -65,19 +65,17 @@ export function Overview() {
             color="#2563eb"
             trackColor="#e2e8f0"
           >
-            <span style={{ fontSize: 15, fontWeight: 900, color: '#0f172a' }}>
-              {progressPct}%
-            </span>
+            <TrendingUp size={26} color="#2563eb" />
           </CircularProgress>
           <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
             <span style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.053em', color: '#64748b' }}>
               O‘zlashtirish
             </span>
             <span style={{ fontSize: 21, fontWeight: 900, color: '#0f172a', marginTop: 2 }}>
-              {learnedCount} / {totalWords}
+              {progressPct}%
             </span>
             <span style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', marginTop: 1 }}>
-              so‘z yodlandi
+              {learnedCount} / {totalWords} so‘z
             </span>
           </div>
         </div>
