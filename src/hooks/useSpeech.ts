@@ -35,14 +35,14 @@ export function useSpeech() {
   }, [supported]);
 
   const speak = useCallback(
-    (id: string, text: string) => {
+    (id: string, text: string, rate = 0.9) => {
       if (!supported) return;
       const synth = window.speechSynthesis;
       const mine = ++token.current;
       synth.cancel(); // never overlap: the previous utterance is dropped
       const u = new SpeechSynthesisUtterance(text);
       u.lang = 'de-DE';
-      u.rate = 0.9;
+      u.rate = rate;
       u.pitch = 1;
       if (voice) u.voice = voice;
       const done = () => {
