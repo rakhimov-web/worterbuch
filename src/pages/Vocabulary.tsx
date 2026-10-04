@@ -126,7 +126,7 @@ function WordRow({ entry, learned, difficult, speakingId, speechSupported, onSpe
   );
 }
 
-function VocabularyView({ lesson }: { lesson: Lesson }) {
+function VocabularyView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?: boolean }) {
   usePageTitle(`${lesson.level} ${lesson.title} · So‘zlar`);
   const ids = useMemo(() => lesson.entries.map((e) => e.id), [lesson]);
   const { learned, difficult, toggle } = useProgress(lesson.slug, ids);
@@ -164,7 +164,7 @@ function VocabularyView({ lesson }: { lesson: Lesson }) {
 
   return (
     <>
-      <LessonHeader lesson={lesson} learned={learned.size} />
+      {!hideHeader && <LessonHeader lesson={lesson} learned={learned.size} />}
 
       {/* Search Input */}
       <div className="search" role="search">
@@ -280,7 +280,7 @@ function VocabularyView({ lesson }: { lesson: Lesson }) {
   );
 }
 
-export function Vocabulary() {
+export function Vocabulary({ hideHeader = false }: { hideHeader?: boolean }) {
   const lesson = getLesson(useParams().slug);
-  return lesson ? <VocabularyView lesson={lesson} /> : <NotFound />;
+  return lesson ? <VocabularyView lesson={lesson} hideHeader={hideHeader} /> : <NotFound />;
 }

@@ -365,7 +365,7 @@ main {
 
 .seg-item.is-active,
 .seg-item.active {
-  color: var(--color-primary);
+  color: var(--color-dark-heading);
   background: transparent;
   border: none;
   box-shadow: none;
@@ -518,9 +518,7 @@ input[type="search"]::-webkit-search-results-decoration {
 .filters-bar {
   width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 12px;
   margin-top: 16px;
 }
@@ -529,6 +527,7 @@ input[type="search"]::-webkit-search-results-decoration {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  width: 100%;
 }
 
 .pill {
@@ -598,7 +597,7 @@ input[type="search"]::-webkit-search-results-decoration {
   color: var(--color-primary);
 }
 
-/* View switcher with animated sliding glider */
+/* View switcher with animated sliding glider (100% width) */
 .view-switch {
   position: relative;
   display: grid;
@@ -608,6 +607,8 @@ input[type="search"]::-webkit-search-results-decoration {
   border: 2px solid var(--color-border);
   border-radius: 14px;
   isolation: isolate;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .view-glider {
@@ -620,7 +621,7 @@ input[type="search"]::-webkit-search-results-decoration {
   border-radius: 10px;
   border: 1.5px solid var(--color-border);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);
+  transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
   pointer-events: none;
   z-index: 1;
 }
@@ -630,10 +631,11 @@ input[type="search"]::-webkit-search-results-decoration {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
+  min-height: 44px;
   padding: 8px 16px;
   border-radius: 10px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.053em;
@@ -643,6 +645,8 @@ input[type="search"]::-webkit-search-results-decoration {
   transition: color 0.15s ease;
   z-index: 2;
   cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .view-btn.active {

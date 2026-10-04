@@ -6,6 +6,7 @@ import { Overview } from './pages/Overview';
 import { Vocabulary } from './pages/Vocabulary';
 import { Quiz } from './pages/Quiz';
 import { NotFound } from './pages/NotFound';
+import { LessonLayout } from './pages/LessonLayout';
 import { lessons, getLesson } from './data';
 
 export function Mark() {
@@ -75,9 +76,11 @@ export function App() {
             {lessons.map((l) => (
               <Route key={l.slug} path={`/${l.slug}`} element={<Navigate to={`/${l.slug}/vocabulary`} replace />} />
             ))}
-            <Route path="/:slug/vocabulary" element={<Vocabulary />} />
-            <Route path="/:slug/test" element={<Quiz />} />
-            <Route path="/:slug" element={<LessonRedirect />} />
+            <Route path="/:slug" element={<LessonLayout />}>
+              <Route path="vocabulary" element={<Vocabulary hideHeader />} />
+              <Route path="test" element={<Quiz hideHeader />} />
+              <Route index element={<LessonRedirect />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </motion.div>

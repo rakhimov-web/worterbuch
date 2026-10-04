@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useReducer, useRef, useState, useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useOutletContext } from 'react-router-dom';
 import { ArrowRight, Check, Flag, RotateCcw, X, Volume2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { getLesson, type Lesson } from '../data';
@@ -14,12 +14,13 @@ import { CircularProgress } from '@/components/ui/circular-progress';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { NotFound } from './NotFound';
+import type { LessonOutletContext } from './LessonLayout';
 
 type Scope = 'all' | 'todo' | 'difficult';
 
 const OPTION_KEYS = ['A', 'B', 'C', 'D'];
 
-function QuizView({ lesson }: { lesson: Lesson }) {
+function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?: boolean }) {
   usePageTitle(`${lesson.level} ${lesson.title} · Test`);
   const ids = useMemo(() => lesson.entries.map((e) => e.id), [lesson]);
   const byId = useMemo(() => new Map(lesson.entries.map((e) => [e.id, e])), [lesson]);
@@ -32,6 +33,11 @@ function QuizView({ lesson }: { lesson: Lesson }) {
   const [active, setActive] = useState(false);
   const [retryNote, setRetryNote] = useState(false);
   const nextRef = useRef<HTMLButtonElement>(null);
+  const outlet = useOutletContext<LessonOutletContext | null>();
+
+  useEffect(() => {
+    outlet?.setIsQuizActive?.(active);
+  }, [active, outlet]);
 
   const scopeIds = useMemo(
     () => (scope === 'todo' ? ids.filter((id) => !learned.has(id)) : scope === 'difficult' ? ids.filter((id) => difficult.has(id)) : ids),
@@ -112,7 +118,7 @@ function QuizView({ lesson }: { lesson: Lesson }) {
   if (tooSmall) {
     return (
       <>
-        <LessonHeader lesson={lesson} learned={learned.size} />
+        {!hideHeader && <LessonHeader lesson={lesson} learned={learned.size} />}
         <div className="empty">
           <h2>Test uchun so‘zlar yetarli emas</h2>
           <p>Kamida {MIN_LESSON_WORDS} ta so‘z kerak.</p>
@@ -137,7 +143,7 @@ function QuizView({ lesson }: { lesson: Lesson }) {
 
   return (
     <>
-      <LessonHeader lesson={lesson} learned={learned.size} showProgress={!active} />
+      {!hideHeader && <LessonHeader lesson={lesson} learned={learned.size} showProgress={!active} />}
 
       {!active && (
         <section aria-labelledby="setup-h" style={{ marginTop: 24, width: '100%' }}>
@@ -404,7 +410,7 @@ function QuizView({ lesson }: { lesson: Lesson }) {
   );
 }
 
-export function Quiz() {
+export function Quiz({ hideHeader = false }: { hideHeader?: boolean }) {
   const lesson = getLesson(useParams().slug);
-  return lesson ? <QuizView lesson={lesson} /> : <NotFound />;
+  return lesson ? <QuizView lesson={lesson} hideHeader={hideHeader} /> : <NotFound />;
 }
