@@ -110,23 +110,23 @@ export function Flashcards({
               </button>
             </div>
 
-            <div style={{ marginBottom: 12 }}>
+            <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {articleMatch ? (
-                <span className="flashcard-prompt" lang="de">
-                  <Badge variant={artVariant} className="text-xl px-3 py-1 font-bold mr-2">
+                <span className="flashcard-prompt" lang="de" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                  <Badge variant={artVariant} className="text-xl px-3 py-1 font-bold" style={{ display: 'inline-flex', alignItems: 'center' }}>
                     {articleMatch[1]}
-                  </Badge>{' '}
-                  {articleMatch[2]}
+                  </Badge>
+                  <span>{articleMatch[2]}</span>
                 </span>
               ) : (
                 <span className="flashcard-prompt" lang="de">{current.de}</span>
               )}
             </div>
 
-            <div className="pron-badge">[{current.pron}]</div>
-            <p className="flashcard-hint">
-              <RotateCw size={13} style={{ display: 'inline', marginRight: 4 }} aria-hidden="true" />
-              Tarjimasini ko‘rish uchun bosing
+            <div className="pron-badge" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>[{current.pron}]</div>
+            <p className="flashcard-hint" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+              <RotateCw size={14} aria-hidden="true" style={{ display: 'block', flexShrink: 0 }} />
+              <span>Tarjimasini ko‘rish uchun bosing</span>
             </p>
           </div>
 

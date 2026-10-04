@@ -738,7 +738,7 @@ input[type="search"]::-webkit-search-results-decoration {
 
 /* Primary Focus: Nemischa so'z */
 .de {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
@@ -748,10 +748,13 @@ input[type="search"]::-webkit-search-results-decoration {
   color: #0f172a;
   letter-spacing: -0.015em;
   overflow-wrap: anywhere;
+  vertical-align: middle;
 }
 
 .de-text {
   color: #0f172a;
+  display: inline-flex;
+  align-items: center;
 }
 
 .article-pill {
@@ -763,10 +766,12 @@ input[type="search"]::-webkit-search-results-decoration {
   border-radius: 8px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   line-height: 1;
   border-width: 1.5px;
   border-style: solid;
   flex-shrink: 0;
+  vertical-align: middle;
 }
 
 .article-der {
@@ -841,6 +846,7 @@ input[type="search"]::-webkit-search-results-decoration {
 .status-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   padding: 4px 10px;
   border-radius: 999px;
@@ -849,6 +855,7 @@ input[type="search"]::-webkit-search-results-decoration {
   letter-spacing: 0.02em;
   border: 1.5px solid transparent;
   line-height: 1;
+  vertical-align: middle;
 }
 
 .status-badge-learned {
@@ -1624,6 +1631,12 @@ legend {
   font-weight: 900;
   color: var(--color-dark-heading);
   letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  line-height: 1.25;
 }
 
 .flashcard-answer {
