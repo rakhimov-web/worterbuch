@@ -3,7 +3,15 @@ import { ChevronLeft, BookOpen, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Lesson } from '../data';
 
-export function LessonHeader({ lesson, learned }: { lesson: Lesson; learned: number }) {
+export function LessonHeader({
+  lesson,
+  learned,
+  showProgress = true,
+}: {
+  lesson: Lesson;
+  learned: number;
+  showProgress?: boolean;
+}) {
   const total = lesson.entries.length;
   const pct = total ? learned / total : 0;
   const location = useLocation();
@@ -11,13 +19,13 @@ export function LessonHeader({ lesson, learned }: { lesson: Lesson; learned: num
   const isTest = location.pathname.endsWith('/test');
 
   return (
-    <div style={{ marginBottom: 20 }}>
+    <div style={{ marginBottom: 20, width: '100%' }}>
       <nav className="crumbs" aria-label="Sahifa yo‘li">
         <Link to="/">
           <ChevronLeft size={16} aria-hidden="true" />
           <span>{lesson.level}</span>
         </Link>
-        <span aria-hidden="true" style={{ color: '#94A3B8' }}>/</span>
+        <span aria-hidden="true" style={{ color: '#94a3b8' }}>/</span>
         <span aria-current="page">{lesson.title}</span>
       </nav>
       <h1 className="page-title" tabIndex={-1}>
@@ -49,15 +57,17 @@ export function LessonHeader({ lesson, learned }: { lesson: Lesson; learned: num
         </NavLink>
       </nav>
 
-      <div className="progress">
-        <div className="progress-text">
-          <span><strong>{learned}</strong> / {total} so‘z yodlandi</span>
-          <span>{Math.round(pct * 100)}%</span>
+      {showProgress && (
+        <div className="progress">
+          <div className="progress-text">
+            <span><strong>{learned}</strong> / {total} so‘z yodlandi</span>
+            <span>{Math.round(pct * 100)}%</span>
+          </div>
+          <div className="bar" role="progressbar" aria-label="Yodlangan so‘zlar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={learned}>
+            <i style={{ transform: `scaleX(${pct})` }} />
+          </div>
         </div>
-        <div className="bar" role="progressbar" aria-label="Yodlangan so‘zlar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={learned}>
-          <i style={{ transform: `scaleX(${pct})` }} />
-        </div>
-      </div>
+      )}
     </div>
   );
 }

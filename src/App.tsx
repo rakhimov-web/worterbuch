@@ -11,30 +11,27 @@ import { lessons } from './data';
 export function Mark() {
   return (
     <svg className="brand-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      {/* Duolingo Chunky 3D Sticker Base */}
-      <rect x="0" y="3" width="32" height="29" rx="10" fill="#46a302" />
-      <rect x="0" y="0" width="32" height="28" rx="10" fill="#58cc02" />
+      {/* Minimalist German Royal Badge Base */}
+      <rect x="0" y="3" width="32" height="29" rx="9" fill="#1e40af" />
+      <rect x="0" y="0" width="32" height="28" rx="9" fill="#2563eb" />
 
-      {/* Umlaut Dots (¨) in Playful Duolingo Gold */}
-      <circle cx="11.5" cy="7.5" r="2" fill="#ffd900" stroke="#000437" strokeWidth="0.75" />
-      <circle cx="20.5" cy="7.5" r="2" fill="#ffd900" stroke="#000437" strokeWidth="0.75" />
+      {/* German Tri-color Minimalist Micro Accent */}
+      <rect x="7" y="5" width="6" height="2.5" rx="1.25" fill="#111827" />
+      <rect x="13" y="5" width="6" height="2.5" rx="1.25" fill="#ef4444" />
+      <rect x="19" y="5" width="6" height="2.5" rx="1.25" fill="#f59e0b" />
 
-      {/* Storybook Open Pages (Chunky & Friendly) */}
+      {/* Open Vocabulary Book / Card Pages (Pure White) */}
       <path
-        d="M6 13C6 11.5 7.5 10.5 9 10.5H14.5C15.3 10.5 16 11.2 16 12V22C16 22 13.5 21 9 21C7.5 21 6 22 6 23V13Z"
+        d="M7 11.5C7 10.4 7.9 9.5 9 9.5H14.5C15.3 9.5 16 10.2 16 11V21.5C16 21.5 13.8 20.5 9.5 20.5C8.1 20.5 7 21.4 7 22.5V11.5Z"
         fill="#ffffff"
-        stroke="#46a302"
-        strokeWidth="1.2"
       />
       <path
-        d="M26 13C26 11.5 24.5 10.5 23 10.5H17.5C16.7 10.5 16 11.2 16 12V22C16 22 18.5 21 23 21C24.5 21 26 22 26 23V13Z"
-        fill="#ffffff"
-        stroke="#46a302"
-        strokeWidth="1.2"
+        d="M25 11.5C25 10.4 24.1 9.5 23 9.5H17.5C16.7 9.5 16 10.2 16 11V21.5C16 21.5 18.2 20.5 22.5 20.5C23.9 20.5 25 21.4 25 22.5V11.5Z"
+        fill="#f8fafc"
       />
 
-      {/* Duolingo Spark Blue Bookmark Ribbon */}
-      <path d="M14.5 10.5H17.5V17L16 15.5L14.5 17V10.5Z" fill="#1cb0f6" />
+      {/* Clean Minimalist Golden Ribbon Bookmark */}
+      <path d="M15 9.5H17V16L16 15L15 16V9.5Z" fill="#f59e0b" />
     </svg>
   );
 }
@@ -65,17 +62,17 @@ export function App() {
             <span className="brand-subtitle">Nemis tili</span>
           </div>
         </Link>
-        <div className="topbar-badge" title="Kunlik o‘rganish holati">
-          <Flame size={18} color="#ff9600" aria-hidden="true" />
-          <span>A1.1 Lektion 1</span>
+        <div className="topbar-badge" title="Dars darajasi">
+          <Flame size={18} color="#f59e0b" aria-hidden="true" />
+          <span>A1.1 Kursi</span>
         </div>
       </header>
       <main id="main">
         <motion.div
           key={pathname}
-          initial={reduce ? false : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: reduce ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
+          initial={reduce ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: reduce ? 0 : 0.15 }}
         >
           <Routes>
             <Route path="/" element={<Overview />} />

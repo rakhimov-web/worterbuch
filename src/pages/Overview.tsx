@@ -5,27 +5,45 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { useSyncExternalStore } from 'react';
 import { progressStore } from '../lib/progress';
 import { CircularProgress } from '@/components/ui/circular-progress';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 export function Overview() {
   usePageTitle(`${levelLabel} darslari · Wörterbuch`);
   const state = useSyncExternalStore(progressStore.subscribe, progressStore.getSnapshot, progressStore.getSnapshot);
 
-  // Compute total statistics
-  const firstLesson = lessons[0];
-  const validIds = new Set(firstLesson.entries.map((e) => e.id));
-  const learnedCount = (state.lessons[firstLesson.slug]?.learned ?? []).filter((id) => validIds.has(id)).length;
-  const difficultCount = (state.lessons[firstLesson.slug]?.difficult ?? []).filter((id) => validIds.has(id)).length;
-  const totalWords = firstLesson.entries.length;
+  // Find last visited lesson from localStorage
+  const lastVisitedSlug = (typeof window !== 'undefined' && localStorage.getItem('last_visited_lesson')) || lessons[0].slug;
+  const activeLesson = lessons.find((l) => l.slug === lastVisitedSlug) || lessons[0];
+
+  // Compute statistics for active lesson
+  const validIds = new Set(activeLesson.entries.map((e) => e.id));
+  const learnedCount = (state.lessons[activeLesson.slug]?.learned ?? []).filter((id) => validIds.has(id)).length;
+  const difficultCount = (state.lessons[activeLesson.slug]?.difficult ?? []).filter((id) => validIds.has(id)).length;
+  const totalWords = activeLesson.entries.length;
   const progressPct = totalWords > 0 ? Math.round((learnedCount / totalWords) * 100) : 0;
   const difficultPct = totalWords > 0 ? Math.round((difficultCount / totalWords) * 100) : 0;
+
+  // Determine resume state
+  const isCompleted = learnedCount === totalWords && totalWords > 0;
+  const isStarted = learnedCount > 0 && !isCompleted;
+
+  const resumeBadge = isCompleted ? 'Mustahkamlang 🎉' : isStarted ? 'Davom ettirish' : 'Boshlash';
+  const resumeHeadline = isCompleted
+    ? 'A1.1 Kursi — Bilimingizni mustahkamlang'
+    : isStarted
+    ? 'A1.1 Kursi — O‘rganishda davom eting'
+    : 'A1.1 Kursi — O‘rganishni boshlang';
+  const resumeSubtitle = isCompleted
+    ? 'Barcha so‘zlar yodlangan, testda o‘zingizni sinang!'
+    : isStarted
+    ? `${learnedCount} ta so‘z yodlandi · yana ${totalWords - learnedCount} ta qoldi`
+    : `${totalWords} ta muhim boshlang‘ich so‘z va iboralar`;
 
   return (
     <>
       {/* Header & Level Info */}
-      <div style={{ marginBottom: 28 }}>
-        <p className="eyebrow" style={{ color: '#58cc02' }}>
+      <div style={{ marginBottom: 24, width: '100%' }}>
+        <p className="eyebrow">
           <span>Nemis tili kursi</span>
           <span>·</span>
           <span>Goethe A1.1</span>
@@ -36,145 +54,148 @@ export function Overview() {
         <p className="lede">Darslikdagi so‘zlarni yodlang: talaffuz, audio va test bilan.</p>
       </div>
 
-      {/* Duolingo Chunky Circular Stats Grid */}
+      {/* Overview Statistics (Display Flex 3-column row) */}
       <div className="stats-grid">
-        {/* Stat 1: Kurs o'zlashtirilishi */}
-        <Card className="p-5 flex flex-row items-center gap-4">
+        {/* Stat 1: O'zlashtirish */}
+        <div className="stat-item">
           <CircularProgress
             value={progressPct}
-            size={72}
-            strokeWidth={7.5}
-            color="#58cc02"
-            trackColor="#e5e5e5"
+            size={68}
+            strokeWidth={7}
+            color="#2563eb"
+            trackColor="#e2e8f0"
           >
-            <span style={{ fontSize: 16, fontWeight: 900, color: '#4b4b4b' }}>
+            <span style={{ fontSize: 15, fontWeight: 900, color: '#0f172a' }}>
               {progressPct}%
             </span>
           </CircularProgress>
-          <div className="flex flex-col min-w-0">
-            <span style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#777777' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+            <span style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.053em', color: '#64748b' }}>
               O‘zlashtirish
             </span>
-            <span style={{ fontSize: 22, fontWeight: 900, color: '#4b4b4b', marginTop: 2 }}>
+            <span style={{ fontSize: 21, fontWeight: 900, color: '#0f172a', marginTop: 2 }}>
               {learnedCount} / {totalWords}
             </span>
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#afafaf', marginTop: 1 }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', marginTop: 1 }}>
               so‘z yodlandi
             </span>
           </div>
-        </Card>
+        </div>
 
-        {/* Stat 2: Yodlanganlar holati */}
-        <Card className="p-5 flex flex-row items-center gap-4">
+        {/* Stat 2: Yodlanganlar */}
+        <div className="stat-item">
           <CircularProgress
             value={progressPct}
-            size={72}
-            strokeWidth={7.5}
-            color="#1cb0f6"
-            trackColor="#e5e5e5"
+            size={68}
+            strokeWidth={7}
+            color="#10b981"
+            trackColor="#e2e8f0"
           >
-            <CheckCircle2 size={26} color="#1cb0f6" />
+            <CheckCircle2 size={26} color="#10b981" />
           </CircularProgress>
-          <div className="flex flex-col min-w-0">
-            <span style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#777777' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+            <span style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.053em', color: '#64748b' }}>
               Yodlangan
             </span>
-            <span style={{ fontSize: 22, fontWeight: 900, color: '#4b4b4b', marginTop: 2 }}>
+            <span style={{ fontSize: 21, fontWeight: 900, color: '#0f172a', marginTop: 2 }}>
               {learnedCount} ta
             </span>
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#afafaf', marginTop: 1 }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', marginTop: 1 }}>
               faol xotirada
             </span>
           </div>
-        </Card>
+        </div>
 
         {/* Stat 3: Qiyin so'zlar */}
-        <Card className="p-5 flex flex-row items-center gap-4">
+        <div className="stat-item">
           <CircularProgress
             value={difficultPct}
-            size={72}
-            strokeWidth={7.5}
-            color="#ff9600"
-            trackColor="#e5e5e5"
+            size={68}
+            strokeWidth={7}
+            color="#f59e0b"
+            trackColor="#e2e8f0"
           >
-            <Award size={26} color="#ff9600" />
+            <Award size={26} color="#f59e0b" />
           </CircularProgress>
-          <div className="flex flex-col min-w-0">
-            <span style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#777777' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+            <span style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.053em', color: '#64748b' }}>
               Qiyin so‘zlar
             </span>
-            <span style={{ fontSize: 22, fontWeight: 900, color: '#4b4b4b', marginTop: 2 }}>
+            <span style={{ fontSize: 21, fontWeight: 900, color: '#0f172a', marginTop: 2 }}>
               {difficultCount} ta
             </span>
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#afafaf', marginTop: 1 }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8', marginTop: 1 }}>
               takrorlashga
             </span>
           </div>
-        </Card>
+        </div>
       </div>
 
-      {/* Duolingo Green Primary Hero Banner */}
-      <div style={{ marginTop: 28 }}>
+      {/* Quick Resume Hero Banner (100% Width & Vertically Centered Arrow) */}
+      <div style={{ marginTop: 24, width: '100%' }}>
         <Link
-          to={`/${firstLesson.slug}/vocabulary`}
+          to={`/${activeLesson.slug}/vocabulary`}
           style={{
+            width: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            gap: 20,
             padding: '24px 28px',
-            background: '#58cc02',
-            border: '2px solid #58cc02',
-            borderBottom: '5px solid #46a302',
+            background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
+            border: '2px solid #1d4ed8',
+            borderBottom: '5px solid #1e40af',
             color: '#ffffff',
             textDecoration: 'none',
             borderRadius: 20,
-            transition: 'background-color 0.15s ease',
+            boxSizing: 'border-box',
           }}
         >
-          <div>
+          <div style={{ minWidth: 0, flex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Badge variant="warning" className="bg-[#ffd900] text-[#7a5200] border-[#d87e00]">
+              <Badge variant="warning" className="bg-[#fef3c7] text-[#92400e] border-[#fde68a]">
                 <Sparkles size={12} className="mr-1 inline" />
-                {learnedCount === 0 ? 'Boshlash' : 'Davom ettirish'}
+                {resumeBadge}
               </Badge>
             </div>
-            <h2 style={{ fontSize: 24, fontWeight: 900, marginTop: 10, color: '#ffffff', letterSpacing: '-0.015em' }}>
-              A1.1 Kursi — So‘zlar va mashqlar
+            <h2 style={{ fontSize: 22, fontWeight: 900, marginTop: 8, color: '#ffffff', letterSpacing: '-0.015em' }}>
+              {resumeHeadline}
             </h2>
-            <p style={{ fontSize: 15, fontWeight: 700, color: '#d7ffb8', marginTop: 4 }}>
-              {learnedCount > 0
-                ? `${learnedCount} ta so‘z yodlandi · yana ${totalWords - learnedCount} ta qoldi`
-                : 'Boshlang‘ich 48 ta muhim so‘z va iboralar'}
+            <p style={{ fontSize: 14, fontWeight: 700, color: '#bfdbfe', marginTop: 4 }}>
+              {resumeSubtitle}
             </p>
           </div>
+
+          {/* Centered Large Arrow Icon */}
           <div
             style={{
-              width: 50,
-              height: 50,
+              width: 52,
+              height: 52,
               borderRadius: 16,
-              background: 'rgba(255, 255, 255, 0.25)',
-              display: 'grid',
-              placeItems: 'center',
+              background: 'rgba(255, 255, 255, 0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               flexShrink: 0,
             }}
           >
-            <ArrowRight size={24} color="#ffffff" aria-hidden="true" />
+            <ArrowRight size={26} color="#ffffff" aria-hidden="true" />
           </div>
         </Link>
       </div>
 
-      {/* Darslar ro‘yxati (Curriculum List) */}
+      {/* Darslar ro‘yxati (Curriculum List - 100% Width) */}
       <div className="section-gap">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-          <h2 style={{ fontSize: 22, fontWeight: 900, color: '#4b4b4b' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, width: '100%' }}>
+          <h2 style={{ fontSize: 22, fontWeight: 900, color: 'var(--color-dark-heading)' }}>
             Darslar rejasi
           </h2>
-          <span style={{ fontSize: 14, fontWeight: 700, color: '#777777' }}>
+          <span style={{ fontSize: 14, fontWeight: 700, color: '#64748b' }}>
             1 ta dars mavjud
           </span>
         </div>
 
-        <ul style={{ display: 'grid', gap: 14 }} aria-label={`${levelLabel} darslari`}>
+        <ul style={{ display: 'grid', gap: 14, width: '100%' }} aria-label={`${levelLabel} darslari`}>
           {lessons.map((l) => {
             const valid = new Set(l.entries.map((e) => e.id));
             const learned = (state.lessons[l.slug]?.learned ?? []).filter((id) => valid.has(id)).length;
@@ -188,14 +209,15 @@ export function Overview() {
                       width: 52,
                       height: 52,
                       borderRadius: 16,
-                      background: pct === 100 ? '#d7ffb8' : '#ddf4ff',
-                      border: `2px solid ${pct === 100 ? '#a5ed6e' : '#84d8ff'}`,
-                      display: 'grid',
-                      placeItems: 'center',
+                      background: pct === 100 ? '#ecfdf5' : '#eff6ff',
+                      border: `2px solid ${pct === 100 ? '#a7f3d0' : '#bfdbfe'}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       flexShrink: 0,
                     }}
                   >
-                    <BookOpen size={24} color={pct === 100 ? '#2b7a00' : '#1cb0f6'} aria-hidden="true" />
+                    <BookOpen size={24} color={pct === 100 ? '#059669' : '#2563eb'} aria-hidden="true" />
                   </div>
                   <div className="grow">
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -215,32 +237,33 @@ export function Overview() {
           })}
 
           {/* Upcoming lesson */}
-          <li className="lesson-card-item" style={{ opacity: 0.65, background: '#fafafa' }}>
+          <li className="lesson-card-item" style={{ opacity: 0.65, background: '#f8fafc' }}>
             <div className="lesson-link" style={{ cursor: 'default' }}>
               <div
                 style={{
                   width: 52,
                   height: 52,
                   borderRadius: 16,
-                  background: '#f0f0f0',
-                  border: '2px solid #e5e5e5',
-                  display: 'grid',
-                  placeItems: 'center',
+                  background: '#f1f5f9',
+                  border: '2px solid #e2e8f0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   flexShrink: 0,
                 }}
               >
-                <Lock size={22} color="#afafaf" aria-hidden="true" />
+                <Lock size={22} color="#94a3b8" aria-hidden="true" />
               </div>
               <div className="grow">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <h3 style={{ color: '#777777' }}>Lektion 2: Freunde, Kollegen und ich</h3>
+                  <h3 style={{ color: '#64748b' }}>Lektion 2: Freunde, Kollegen und ich</h3>
                   <Badge variant="secondary">Tez kunda</Badge>
                 </div>
                 <p className="lede" style={{ marginTop: 4, fontSize: 14 }}>
                   Kasalxona, ish, tanishuv mavzulari
                 </p>
               </div>
-              <Lock size={20} color="#afafaf" aria-hidden="true" />
+              <Lock size={20} color="#94a3b8" aria-hidden="true" />
             </div>
           </li>
         </ul>

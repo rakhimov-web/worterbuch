@@ -68,6 +68,14 @@ function QuizView({ lesson }: { lesson: Lesson }) {
   );
 
   useEffect(() => {
+    try {
+      localStorage.setItem('last_visited_lesson', lesson.slug);
+    } catch {
+      // ignore
+    }
+  }, [lesson.slug]);
+
+  useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
@@ -129,10 +137,10 @@ function QuizView({ lesson }: { lesson: Lesson }) {
 
   return (
     <>
-      <LessonHeader lesson={lesson} learned={learned.size} />
+      <LessonHeader lesson={lesson} learned={learned.size} showProgress={!active} />
 
       {!active && (
-        <section aria-labelledby="setup-h" style={{ marginTop: 24 }}>
+        <section aria-labelledby="setup-h" style={{ marginTop: 24, width: '100%' }}>
           <h2 id="setup-h" className="sr-only">Testni boshlash</h2>
           <fieldset>
             <legend>Qaysi so‘zlar?</legend>
@@ -189,7 +197,7 @@ function QuizView({ lesson }: { lesson: Lesson }) {
       )}
 
       {active && round.phase !== 'done' && q && (
-        <section aria-labelledby="q-h">
+        <section aria-labelledby="q-h" style={{ width: '100%' }}>
           <div className="progress">
             <div className="progress-text">
               <span>
@@ -281,13 +289,16 @@ function QuizView({ lesson }: { lesson: Lesson }) {
 
           <p className="quiet">
             Test davomida belgilangan so‘zlar saqlanadi.{' '}
-            <Link to={`/${lesson.slug}/vocabulary`}>So‘zlarga qaytish</Link> testni boshidan boshlaydi.
+            <Link to={`/${lesson.slug}/vocabulary`} className="quiz-return-badge">
+              So‘zlarga qaytish
+            </Link>{' '}
+            testni boshidan boshlaydi.
           </p>
         </section>
       )}
 
       {active && round.phase === 'done' && (
-        <section aria-labelledby="res-h" className="card q-card">
+        <section aria-labelledby="res-h" className="card q-card" style={{ width: '100%' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
             <div>
               <h2 id="res-h" className="eyebrow">
