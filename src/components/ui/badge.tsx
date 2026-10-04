@@ -25,12 +25,48 @@ const badgeVariants = cva(
   }
 );
 
+const variantStyles: Record<string, React.CSSProperties> = {
+  default: { background: '#2563eb', borderColor: '#1d4ed8', color: '#ffffff' },
+  secondary: { background: '#f1f5f9', borderColor: '#cbd5e1', color: '#334155' },
+  destructive: { background: '#ea2b2b', borderColor: '#d11f1f', color: '#ffffff' },
+  outline: { background: '#ffffff', borderColor: '#cbd5e1', color: '#334155' },
+  success: { background: '#ecfdf5', borderColor: '#a7f3d0', color: '#047857' },
+  warning: { background: '#fffbeb', borderColor: '#fde68a', color: '#b45309' },
+  der: { background: '#dbeafe', borderColor: '#93c5fd', color: '#1d4ed8' },
+  die: { background: '#ffe4e6', borderColor: '#fecdd3', color: '#e11d48' },
+  das: { background: '#dcfce7', borderColor: '#86efac', color: '#15803d' },
+  pl: { background: '#f3e8ff', borderColor: '#d8b4fe', color: '#7e22ce' },
+};
+
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, ...props }: BadgeProps) {
-  return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
+function Badge({ className, variant = 'default', style, ...props }: BadgeProps) {
+  const v = (variant as string) || 'default';
+  return (
+    <div
+      className={cn(badgeVariants({ variant }), className)}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 4,
+        borderRadius: 12,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        padding: '2px 10px',
+        fontSize: 12,
+        fontWeight: 800,
+        textTransform: 'uppercase',
+        letterSpacing: '0.04em',
+        lineHeight: 1.2,
+        ...variantStyles[v],
+        ...style,
+      }}
+      {...props}
+    />
+  );
 }
 
 export { Badge, badgeVariants };

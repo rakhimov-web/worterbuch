@@ -11,7 +11,6 @@ import { LessonHeader } from '../components/LessonHeader';
 import { AudioButton } from '../components/AudioButton';
 import { Flashcards } from '../components/Flashcards';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { NotFound } from './NotFound';
 
 type Filter = 'all' | 'todo' | 'difficult';
@@ -41,14 +40,14 @@ function GermanWord({ text }: { text: string }) {
       : 'das';
     return (
       <span className="de" lang="de">
-        <Badge variant={artVariant} className="article-pill font-bold mr-1.5">
+        <span className={`article-pill article-${artVariant}`}>
           {match[1]}
-        </Badge>
-        <span>{match[2]}</span>
+        </span>
+        <span className="de-text">{match[2]}</span>
       </span>
     );
   }
-  return <span className="de" lang="de">{text}</span>;
+  return <span className="de" lang="de"><span className="de-text">{text}</span></span>;
 }
 
 interface RowProps {
@@ -71,20 +70,29 @@ function WordRow({ entry, learned, difficult, speakingId, speechSupported, onSpe
       <div className="word-content">
         <GermanWord text={entry.de} />
         <p className="uz" lang="uz">{entry.uz}</p>
-        <p className="pron">{entry.pron}</p>
-        <div className="tags">
-          {kindLabel && <Badge variant="secondary" className="tag-kind">{kindLabel}</Badge>}
-          {learned && (
-            <Badge variant="success" className="tag-learned">
-              <Check aria-hidden="true" size={12} className="mr-1 inline" /> Yodlangan
-            </Badge>
-          )}
-          {difficult && (
-            <Badge variant="warning" className="tag-difficult">
-              <Flag aria-hidden="true" size={12} className="mr-1 inline" /> Qiyin
-            </Badge>
-          )}
-        </div>
+        {entry.pron && (
+          <p className="pron">
+            <span className="pron-label">o‘qilishi:</span>
+            <span className="pron-val">[{entry.pron}]</span>
+          </p>
+        )}
+        {(kindLabel || learned || difficult) && (
+          <div className="tags">
+            {kindLabel && <span className="status-badge status-badge-kind">{kindLabel}</span>}
+            {learned && (
+              <span className="status-badge status-badge-learned">
+                <Check aria-hidden="true" size={13} style={{ flexShrink: 0 }} />
+                <span>Yodlangan</span>
+              </span>
+            )}
+            {difficult && (
+              <span className="status-badge status-badge-difficult">
+                <Flag aria-hidden="true" size={13} style={{ flexShrink: 0 }} />
+                <span>Qiyin so‘z</span>
+              </span>
+            )}
+          </div>
+        )}
       </div>
       <div className="row-actions">
         <AudioButton
@@ -95,7 +103,7 @@ function WordRow({ entry, learned, difficult, speakingId, speechSupported, onSpe
         />
         <button
           type="button"
-          className="icon-btn"
+          className={`icon-btn${learned ? ' is-active-learned' : ''}`}
           aria-pressed={learned}
           aria-label={`${entry.de}: ${learnedLabel}`}
           title={learnedLabel}
@@ -105,7 +113,7 @@ function WordRow({ entry, learned, difficult, speakingId, speechSupported, onSpe
         </button>
         <button
           type="button"
-          className="icon-btn"
+          className={`icon-btn${difficult ? ' is-active-difficult' : ''}`}
           aria-pressed={difficult}
           aria-label={`${entry.de}: ${difficultLabel}`}
           title={difficultLabel}
@@ -190,6 +198,13 @@ function VocabularyView({ lesson }: { lesson: Lesson }) {
         </div>
 
         <div className="view-switch" role="group" aria-label="Ko‘rinish rejimi">
+          <div
+            className="view-glider"
+            style={{
+              transform: view === 'cards' ? 'translateX(100%)' : 'translateX(0%)',
+            }}
+            aria-hidden="true"
+          />
           <button
             type="button"
             className={`view-btn${view === 'list' ? ' active' : ''}`}

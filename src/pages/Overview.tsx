@@ -153,11 +153,26 @@ export function Overview() {
           }}
         >
           <div style={{ minWidth: 0, flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Badge variant="warning" className="bg-[#fef3c7] text-[#92400e] border-[#fde68a]">
-                <Sparkles size={12} className="mr-1 inline" />
-                {resumeBadge}
-              </Badge>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '6px 14px',
+                borderRadius: 20,
+                background: 'rgba(255, 255, 255, 0.22)',
+                border: '1.5px solid rgba(255, 255, 255, 0.35)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                color: '#ffffff',
+                fontSize: 13,
+                fontWeight: 800,
+                letterSpacing: '0.02em',
+                width: 'fit-content',
+              }}
+            >
+              <Sparkles size={15} color="#ffffff" aria-hidden="true" style={{ flexShrink: 0 }} />
+              <span>{resumeBadge}</span>
             </div>
             <h2 style={{ fontSize: 22, fontWeight: 900, marginTop: 8, color: '#ffffff', letterSpacing: '-0.015em' }}>
               {resumeHeadline}

@@ -32,6 +32,13 @@ export function LessonHeader({
       </h1>
 
       <nav className="ios-segmented-control" aria-label="Bo‘lim">
+        <div
+          className="seg-glider"
+          style={{
+            transform: isTest ? 'translateX(100%)' : 'translateX(0%)',
+          }}
+          aria-hidden="true"
+        />
         <NavLink className={`seg-item${isVocab ? ' is-active' : ''}`} to={`/${lesson.slug}/vocabulary`}>
           <BookOpen size={16} aria-hidden="true" />
           <span>So‘zlar</span>
