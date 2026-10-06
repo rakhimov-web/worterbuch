@@ -389,7 +389,7 @@ function QuizView({ lesson, hideHeader = false }: { lesson: Lesson; hideHeader?:
             </div>
           ) : (
             <p className="lede" style={{ marginTop: 12, color: '#059669', fontWeight: 600 }}>
-              Hamma javoblar to‘g‘ri! Siz Lektion 1 so‘zlarini 100% mukammal o‘zlashtirdingiz. 🎉
+              Hamma javoblar to‘g‘ri! Siz {lesson.title} so‘zlarini 100% mukammal o‘zlashtirdingiz. 🎉
             </p>
           )}
 

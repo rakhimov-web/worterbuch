@@ -8,6 +8,7 @@ import { lektion6 } from './lessons/a1-1-lektion-6';
 import { lektion7 } from './lessons/a1-1-lektion-7';
 import { lektion8 } from './lessons/a1-1-lektion-8';
 import { lektion9 } from './lessons/a1-1-lektion-9';
+import { lektion10 } from './lessons/a1-1-lektion-10';
 
 /** Add new lessons here; routing, overview, vocabulary and quiz pick them up automatically. */
 export const lessons: Lesson[] = [
@@ -20,6 +21,7 @@ export const lessons: Lesson[] = [
   lektion7,
   lektion8,
   lektion9,
+  lektion10,
 ];
 
 export const levelLabel = 'A1.1';

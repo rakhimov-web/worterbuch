@@ -150,7 +150,7 @@ export function Flashcards({
         <div style={{ display: 'flex', gap: 8 }}>
           <button
             type="button"
-            className="icon-btn"
+            className={`icon-btn${isLearned ? ' is-active-learned' : ''}`}
             aria-pressed={isLearned}
             onClick={() => onToggle(current.id, 'learned')}
             title={isLearned ? 'Yodlangan, olib tashlash' : 'Yodladim deb belgilash'}
@@ -159,7 +159,7 @@ export function Flashcards({
           </button>
           <button
             type="button"
-            className="icon-btn"
+            className={`icon-btn${isDifficult ? ' is-active-difficult' : ''}`}
             aria-pressed={isDifficult}
             onClick={() => onToggle(current.id, 'difficult')}
             title={isDifficult ? 'Qiyin so‘z, olib tashlash' : 'Qiyin deb belgilash'}

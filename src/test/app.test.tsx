@@ -18,7 +18,7 @@ beforeEach(() => {
 describe('routes', () => {
   it('overview lists Lektion 1 with its real word count', () => {
     renderAt('/');
-    expect(screen.getByRole('link', { name: /Lektion 1/ })).toHaveAttribute('href', '/a1.1-lektion-1/vocabulary');
+    expect(screen.getByRole('link', { name: /Lektion 1\b/ })).toHaveAttribute('href', '/a1.1-lektion-1/vocabulary');
     expect(screen.getByText(/48 ta so‘z/)).toBeInTheDocument();
   });
   it('opens vocabulary directly and shows every word', () => {

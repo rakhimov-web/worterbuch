@@ -2112,15 +2112,26 @@ legend {
   }
   .filters {
     gap: 8px;
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .filters::-webkit-scrollbar {
+    display: none;
   }
   .pill {
-    min-height: 38px;
-    padding: 6px 14px;
-    font-size: 12.5px;
-    border-radius: 12px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-height: 40px;
+    padding: 7px 15px;
+    font-size: 13px;
+    border-radius: 13px;
     border-width: 1.5px;
     border-bottom-width: 3px;
-    gap: 5px;
+    gap: 6px;
   }
   .pill::before {
     width: 15px;
@@ -2129,7 +2140,7 @@ legend {
     border-width: 1.5px;
   }
   .pill .count {
-    font-size: 12px;
+    font-size: 12.5px;
   }
 
   /* View Switch */
@@ -2267,18 +2278,28 @@ legend {
     margin-top: 20px;
   }
 
-  /* Radio Row (Quiz setup options) */
+  /* Radio Row (Quiz setup options - Balanced responsive grid) */
   .radio-row {
     gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    width: 100%;
+  }
+  .radio-row label {
+    display: flex;
+    width: 100%;
   }
   .radio-row span {
-    min-height: 38px;
-    padding: 6px 14px;
-    font-size: 12.5px;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    min-height: 42px;
+    padding: 8px 12px;
+    font-size: 13px;
     border-radius: 12px;
     border-width: 1.5px;
     border-bottom-width: 3px;
-    gap: 5px;
+    gap: 6px;
   }
   .radio-row span::before {
     width: 15px;
@@ -2312,19 +2333,19 @@ legend {
     margin-top: 18px;
   }
   .choice {
-    min-height: 52px;
-    padding: 10px 16px;
-    font-size: 15px;
-    border-radius: 14px;
+    min-height: 56px;
+    padding: 12px 18px;
+    font-size: 15.5px;
+    border-radius: 15px;
     gap: 12px;
     border-width: 1.5px;
     border-bottom-width: 3.5px;
   }
   .choice-key {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
-    border-radius: 8px;
+    width: 30px;
+    height: 30px;
+    font-size: 12.5px;
+    border-radius: 9px;
   }
   .choice .mark {
     width: 20px;
@@ -2493,6 +2514,22 @@ legend {
   }
   .flashcard-answer {
     font-size: 18px;
+  }
+  .flashcard-controls {
+    gap: 8px;
+  }
+  .flashcard-controls .btn {
+    min-height: 40px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* Choice in Quiz */
+  .choice {
+    min-height: 52px;
+    padding: 10px 14px;
+    font-size: 14px;
+    gap: 10px;
   }
 }
 

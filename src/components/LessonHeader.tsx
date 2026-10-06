@@ -20,9 +20,9 @@ export function LessonHeader({
   return (
     <div className="lesson-header-wrap">
       <nav className="crumbs" aria-label="Sahifa yo‘li">
-        <Link to="/">
+        <Link to="/" aria-label="Barcha darslarga qaytish">
           <ChevronLeft size={16} aria-hidden="true" />
-          <span>{lesson.level}</span>
+          <span>Barcha darslar</span>
         </Link>
         <span aria-hidden="true" style={{ color: "#94a3b8" }}>
           /
