@@ -66,10 +66,14 @@
 
 *, *::before, *::after {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 html {
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 body {
@@ -78,7 +82,11 @@ body {
   color: var(--color-charcoal);
   font: 700 17px/1.45 var(--font);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   min-height: 100dvh;
+  touch-action: manipulation;
+  overscroll-behavior-y: none;
 }
 
 h1, h2, h3, h4, p {
@@ -113,6 +121,12 @@ svg {
   flex-shrink: 0;
 }
 
+/* Accessibility: Show keyboard navigation rings, but hide blue outline on touch/mouse clicks */
+:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 :focus-visible {
   outline: 3px solid var(--color-primary);
   outline-offset: 2px;
@@ -120,6 +134,60 @@ svg {
 
 h1:focus {
   outline: none;
+}
+
+/* Mobile-native app touch feel: Prevent accidental blue text selection on rapid taps */
+button,
+a,
+input[type="button"],
+input[type="submit"],
+[role="button"],
+.btn,
+.icon-btn,
+.pill,
+.choice,
+.choice-key,
+.seg-item,
+.seg-glider,
+.view-btn,
+.view-glider,
+.flashcard,
+.flashcard-stage,
+.card-face,
+.topbar,
+.brand,
+.topbar-badge,
+.nav-item,
+.curriculum-card,
+.lesson-card-item,
+.lesson-link,
+.resume-hero-link,
+.stat-item,
+.section-header,
+.filter-chip,
+.radio-row,
+.radio-row label,
+.radio-row span,
+.tabs,
+.ios-segmented-control,
+.article-pill,
+.status-badge {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* Allow text selection for actual dictionary learning words */
+.de-text,
+.uz,
+.pron-val,
+.ex-de,
+.ex-uz,
+.example-box,
+.detail-modal {
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 .sr-only {
@@ -336,6 +404,10 @@ main {
   transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
   pointer-events: none;
   z-index: 1;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .seg-item {
@@ -540,11 +612,13 @@ input[type="search"]::-webkit-search-results-decoration {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
+  transition: background-color 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),
+              border-color 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),
+              color 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),
+              box-shadow 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),
+              transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
   cursor: pointer;
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
 }
 
 .pill::before {
@@ -556,7 +630,10 @@ input[type="search"]::-webkit-search-results-decoration {
   border: 2px solid #94a3b8;
   margin-right: 4px;
   background: var(--color-paper-white);
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: background-color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex: none;
   box-sizing: border-box;
 }
@@ -626,6 +703,10 @@ input[type="search"]::-webkit-search-results-decoration {
   transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
   pointer-events: none;
   z-index: 1;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .view-btn {
@@ -704,6 +785,8 @@ input[type="search"]::-webkit-search-results-decoration {
   position: relative;
   box-sizing: border-box;
   transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1251,6 +1334,8 @@ input[type="search"]::-webkit-search-results-decoration {
   border-bottom: 4px solid var(--color-border);
   overflow: hidden;
   box-sizing: border-box;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 76px;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1386,7 +1471,11 @@ legend {
   font-size: 15px;
   font-weight: 800;
   color: var(--color-dark-heading);
-  transition: all 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
+  transition: background-color 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),
+              border-color 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),
+              color 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),
+              box-shadow 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),
+              transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
   box-sizing: border-box;
 }
 
@@ -1399,7 +1488,10 @@ legend {
   border: 2px solid #94a3b8;
   margin-right: 8px;
   background: var(--color-paper-white);
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: background-color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex: none;
   box-sizing: border-box;
 }
@@ -1780,6 +1872,8 @@ legend {
   transform-style: preserve-3d;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .flashcard.is-flipped {
@@ -1789,7 +1883,9 @@ legend {
 .card-face {
   position: absolute;
   inset: 0;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  transform-style: preserve-3d;
   border-radius: 20px;
   background: var(--color-paper-white);
   border: 2px solid var(--color-border);
@@ -1801,6 +1897,7 @@ legend {
   justify-content: center;
   text-align: center;
   box-sizing: border-box;
+  will-change: transform;
 }
 
 .card-face.back {
