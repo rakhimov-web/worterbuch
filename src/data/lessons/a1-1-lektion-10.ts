@@ -87,3 +87,4 @@ export const lektion10: Lesson = {
     w(69, 'Achtung!', 'diqqat!', 'axtung', 'phrase', 'Achtung'),
   ],
 };
+
