@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ChevronRight, Award, ArrowRight, CheckCircle2, Sparkles, BookOpen, TrendingUp } from 'lucide-react';
+import { ChevronRight, Award, ArrowRight, CheckCircle2, Check, Sparkles, BookOpen, TrendingUp } from 'lucide-react';
 import { levelLabel, lessons } from '../data';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useSyncExternalStore, useState, useEffect } from 'react';
@@ -166,18 +166,34 @@ export function Overview() {
               <li key={l.slug} className="lesson-card-item">
                 <Link className="lesson-link" to={`/${l.slug}/vocabulary`}>
                   <div className={`lesson-icon-box ${pct === 100 ? 'is-complete' : ''}`}>
-                    <BookOpen size={isMobile ? 18 : 24} color={pct === 100 ? '#059669' : '#2563eb'} aria-hidden="true" />
+                    {pct === 100 ? (
+                      <CheckCircle2 size={isMobile ? 20 : 24} color="#059669" aria-hidden="true" />
+                    ) : (
+                      <BookOpen size={isMobile ? 18 : 24} color="#2563eb" aria-hidden="true" />
+                    )}
                   </div>
                   <div className="grow">
+                    <h3 className="lesson-card-title">{l.title}</h3>
                     <div className="lesson-meta-row">
-                      <h3>{l.title}</h3>
-                      <Badge variant={pct === 100 ? 'success' : 'der'} className="lesson-badge">
-                        {pct === 100 ? 'Tugallangan 🎉' : `${pct}%`}
+                      <Badge
+                        variant={pct === 100 ? 'success' : pct > 0 ? 'der' : 'secondary'}
+                        className={`lesson-badge ${pct === 100 ? 'is-complete' : ''}`}
+                      >
+                        {pct === 100 ? (
+                          <>
+                            <Check size={11} strokeWidth={3} className="lesson-badge-icon" aria-hidden="true" />
+                            <span>Tugallandi</span>
+                          </>
+                        ) : (
+                          `${pct}%`
+                        )}
                       </Badge>
+                      <span className="lesson-subtext">
+                        {pct === 100
+                          ? `${l.entries.length} ta so‘z to‘liq yodlandi`
+                          : `${l.entries.length} ta so‘z · ${learned} tasi yodlangan`}
+                      </span>
                     </div>
-                    <p className="lesson-subtext">
-                      {l.entries.length} ta so‘z · {learned} tasi yodlangan
-                    </p>
                   </div>
                   <ChevronRight aria-hidden="true" className="lesson-chevron" />
                 </Link>

@@ -1371,12 +1371,16 @@ input[type="search"]::-webkit-search-results-decoration {
   border-color: #a7f3d0;
 }
 
+.lesson-card-title,
 .lesson-link h3 {
   font-family: var(--font-feather);
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 800;
   letter-spacing: -0.015em;
   color: var(--color-dark-heading);
+  line-height: 1.25;
+  margin: 0;
+  overflow-wrap: break-word;
 }
 
 .lesson-link .grow {
@@ -1387,18 +1391,36 @@ input[type="search"]::-webkit-search-results-decoration {
 .lesson-meta-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  margin-top: 5px;
 }
 
 .lesson-badge {
   font-weight: 800;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+}
+
+.lesson-badge-icon {
+  flex-shrink: 0;
+}
+
+.lesson-badge.is-complete {
+  background: #ecfdf5 !important;
+  border-color: #a7f3d0 !important;
+  color: #047857 !important;
+  box-shadow: 0 1px 2px rgba(16, 185, 129, 0.08);
 }
 
 .lesson-subtext {
-  margin-top: 4px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--color-pencil-gray);
+  line-height: 1.35;
 }
 
 .lesson-chevron {
@@ -2124,16 +2146,24 @@ legend {
     width: 20px;
     height: 20px;
   }
+  .lesson-card-title,
   .lesson-link h3 {
     font-size: 16.5px;
+    line-height: 1.25;
+  }
+  .lesson-meta-row {
+    gap: 6px 8px;
+    margin-top: 4px;
   }
   .lesson-badge {
     font-size: 11px;
     padding: 2.5px 7px;
+    border-radius: 8px;
+    gap: 3.5px;
   }
   .lesson-subtext {
     font-size: 12.5px;
-    margin-top: 3px;
+    margin-top: 0;
   }
   .lesson-chevron {
     width: 20px !important;
@@ -2566,6 +2596,26 @@ legend {
   .resume-arrow-box svg {
     width: 18px;
     height: 18px;
+  }
+
+  /* Curriculum lessons */
+  .lesson-card-title,
+  .lesson-link h3 {
+    font-size: 15px;
+    line-height: 1.25;
+  }
+  .lesson-meta-row {
+    gap: 5px 6px;
+    margin-top: 3px;
+  }
+  .lesson-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    gap: 3px;
+  }
+  .lesson-subtext {
+    font-size: 11.5px;
   }
 
   /* Words */
