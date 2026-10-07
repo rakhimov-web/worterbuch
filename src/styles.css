@@ -1159,6 +1159,34 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 /* ==========================================================================
+   Smooth Skeleton Loader & Font-Gate Harmony
+   ========================================================================== */
+
+@keyframes skeletonPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.sk-pulse {
+  animation: skeletonPulse 1.4s ease-in-out infinite;
+  will-change: opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sk-pulse {
+    animation: none;
+  }
+}
+
+.skeleton-flow {
+  width: 100%;
+}
+
+/* ==========================================================================
    Overview Hero Card (Minimal & Tactile Learning Banner)
    ========================================================================== */
 
@@ -1338,7 +1366,7 @@ input[type="search"]::-webkit-search-results-decoration {
   border-bottom: 5px solid #1e40af;
   color: #ffffff;
   text-decoration: none;
-  border-radius: 20px;
+  border-radius: 22px;
   box-sizing: border-box;
   transition: transform 0.15s ease, filter 0.15s ease;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Flame } from 'lucide-react';
@@ -7,6 +7,7 @@ import { Vocabulary } from './pages/Vocabulary';
 import { Quiz } from './pages/Quiz';
 import { NotFound } from './pages/NotFound';
 import { LessonLayout } from './pages/LessonLayout';
+import { OverviewSkeleton } from './components/OverviewSkeleton';
 import { lessons, getLesson } from './data';
 
 export function Mark() {
@@ -35,6 +36,36 @@ export function App() {
   const reduce = useReducedMotion();
   const first = useRef(true);
 
+  // Synchronous check: in SSR or JSDOM (tests), fontsReady starts true so tests pass instantly
+  const [fontsLoaded, setFontsLoaded] = useState(() => {
+    if (typeof document === 'undefined' || !document.fonts || !document.fonts.ready) return true;
+    return document.fonts.status === 'loaded';
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) return;
+    let active = true;
+    // Safety fallback so content always renders even if font network fails
+    const timer = setTimeout(() => {
+      if (active) setFontsLoaded(true);
+    }, 350);
+
+    if (document.fonts?.ready) {
+      document.fonts.ready
+        .then(() => {
+          if (active) setFontsLoaded(true);
+        })
+        .catch(() => {
+          if (active) setFontsLoaded(true);
+        });
+    }
+
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [fontsLoaded]);
+
   // Move focus to the page heading after navigation for keyboard / screen-reader accessibility
   useEffect(() => {
     if (first.current) {
@@ -62,25 +93,29 @@ export function App() {
         </div>
       </header>
       <main id="main">
-        <motion.div
-          key={transitionKey}
-          initial={false}
-          animate={{ opacity: 1 }}
-          transition={{ duration: reduce ? 0 : 0.15 }}
-        >
-          <Routes>
-            <Route path="/" element={<Overview />} />
-            {lessons.map((l) => (
-              <Route key={l.slug} path={`/${l.slug}`} element={<Navigate to={`/${l.slug}/vocabulary`} replace />} />
-            ))}
-            <Route path="/:slug" element={<LessonLayout />}>
-              <Route path="vocabulary" element={<Vocabulary hideHeader />} />
-              <Route path="test" element={<Quiz hideHeader />} />
-              <Route index element={<LessonRedirect />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </motion.div>
+        {!fontsLoaded && pathname === '/' ? (
+          <OverviewSkeleton />
+        ) : (
+          <motion.div
+            key={transitionKey}
+            initial={false}
+            animate={{ opacity: 1 }}
+            transition={{ duration: reduce ? 0 : 0.18 }}
+          >
+            <Routes>
+              <Route path="/" element={<Overview />} />
+              {lessons.map((l) => (
+                <Route key={l.slug} path={`/${l.slug}`} element={<Navigate to={`/${l.slug}/vocabulary`} replace />} />
+              ))}
+              <Route path="/:slug" element={<LessonLayout />}>
+                <Route path="vocabulary" element={<Vocabulary hideHeader />} />
+                <Route path="test" element={<Quiz hideHeader />} />
+                <Route index element={<LessonRedirect />} />
+              </Route>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </motion.div>
+        )}
       </main>
     </div>
   );
