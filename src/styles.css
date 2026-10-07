@@ -1159,7 +1159,7 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 /* ==========================================================================
-   Smooth Skeleton Loader & Font-Gate Harmony
+   Smooth Skeleton Loader (Harmonious Soft Light Blue Palette)
    ========================================================================== */
 
 @keyframes skeletonPulse {
@@ -1167,12 +1167,12 @@ input[type="search"]::-webkit-search-results-decoration {
     opacity: 1;
   }
   50% {
-    opacity: 0.55;
+    opacity: 0.62;
   }
 }
 
 .sk-pulse {
-  animation: skeletonPulse 1.4s ease-in-out infinite;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
   will-change: opacity;
 }
 
@@ -1184,6 +1184,24 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .skeleton-flow {
   width: 100%;
+}
+
+.sk-card-surface {
+  background: #edf5ff !important;
+  border-color: #bfdbfe !important;
+  border-bottom-color: #93c5fd !important;
+}
+
+.sk-bar-strong {
+  background: #93c5fd !important;
+}
+
+.sk-bar-med {
+  background: #bfdbfe !important;
+}
+
+.sk-bar-light {
+  background: #dbeafe !important;
 }
 
 /* ==========================================================================

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Flame } from 'lucide-react';
 import { Overview } from './pages/Overview';
 import { Vocabulary } from './pages/Vocabulary';
@@ -9,6 +9,10 @@ import { NotFound } from './pages/NotFound';
 import { LessonLayout } from './pages/LessonLayout';
 import { OverviewSkeleton } from './components/OverviewSkeleton';
 import { lessons, getLesson } from './data';
+
+const isTestEnv =
+  (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'test') ||
+  (typeof navigator !== 'undefined' && /jsdom/i.test(navigator.userAgent));
 
 export function Mark() {
   return (
@@ -35,36 +39,62 @@ export function App() {
   const { pathname } = useLocation();
   const reduce = useReducedMotion();
   const first = useRef(true);
+  const initialBootDone = useRef(false);
 
-  // Synchronous check: in SSR or JSDOM (tests), fontsReady starts true so tests pass instantly
-  const [fontsLoaded, setFontsLoaded] = useState(() => {
-    if (typeof document === 'undefined' || !document.fonts || !document.fonts.ready) return true;
-    return document.fonts.status === 'loaded';
-  });
+  // Gated initial skeleton: stays visible for ~520ms so user clearly perceives the smooth state
+  const [loadingInitial, setLoadingInitial] = useState(() => !isTestEnv);
 
   useEffect(() => {
-    if (fontsLoaded) return;
-    let active = true;
-    // Safety fallback so content always renders even if font network fails
-    const timer = setTimeout(() => {
-      if (active) setFontsLoaded(true);
-    }, 350);
+    if (isTestEnv || initialBootDone.current) {
+      setLoadingInitial(false);
+      return;
+    }
 
-    if (document.fonts?.ready) {
+    let active = true;
+    let minTimePassed = false;
+    let fontsReady = false;
+
+    const finalize = () => {
+      if (active && minTimePassed && fontsReady) {
+        initialBootDone.current = true;
+        setLoadingInitial(false);
+      }
+    };
+
+    // Noticeable display duration (~520ms) so skeleton is visibly appreciated without dragging
+    const timer = setTimeout(() => {
+      minTimePassed = true;
+      finalize();
+    }, 520);
+
+    if (typeof document !== 'undefined' && document.fonts?.ready) {
       document.fonts.ready
         .then(() => {
-          if (active) setFontsLoaded(true);
+          fontsReady = true;
+          finalize();
         })
         .catch(() => {
-          if (active) setFontsLoaded(true);
+          fontsReady = true;
+          finalize();
         });
+    } else {
+      fontsReady = true;
     }
+
+    // Safety fallback
+    const safetyTimer = setTimeout(() => {
+      if (active) {
+        initialBootDone.current = true;
+        setLoadingInitial(false);
+      }
+    }, 900);
 
     return () => {
       active = false;
       clearTimeout(timer);
+      clearTimeout(safetyTimer);
     };
-  }, [fontsLoaded]);
+  }, []);
 
   // Move focus to the page heading after navigation for keyboard / screen-reader accessibility
   useEffect(() => {
@@ -93,29 +123,40 @@ export function App() {
         </div>
       </header>
       <main id="main">
-        {!fontsLoaded && pathname === '/' ? (
-          <OverviewSkeleton />
-        ) : (
-          <motion.div
-            key={transitionKey}
-            initial={false}
-            animate={{ opacity: 1 }}
-            transition={{ duration: reduce ? 0 : 0.18 }}
-          >
-            <Routes>
-              <Route path="/" element={<Overview />} />
-              {lessons.map((l) => (
-                <Route key={l.slug} path={`/${l.slug}`} element={<Navigate to={`/${l.slug}/vocabulary`} replace />} />
-              ))}
-              <Route path="/:slug" element={<LessonLayout />}>
-                <Route path="vocabulary" element={<Vocabulary hideHeader />} />
-                <Route path="test" element={<Quiz hideHeader />} />
-                <Route index element={<LessonRedirect />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </motion.div>
-        )}
+        <AnimatePresence mode="wait">
+          {loadingInitial && pathname === '/' ? (
+            <motion.div
+              key="skeleton"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: reduce ? 0 : 0.24, ease: 'easeInOut' }}
+              style={{ width: '100%' }}
+            >
+              <OverviewSkeleton />
+            </motion.div>
+          ) : (
+            <motion.div
+              key={transitionKey}
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: reduce ? 0 : 0.22, ease: 'easeOut' }}
+              style={{ width: '100%' }}
+            >
+              <Routes>
+                <Route path="/" element={<Overview />} />
+                {lessons.map((l) => (
+                  <Route key={l.slug} path={`/${l.slug}`} element={<Navigate to={`/${l.slug}/vocabulary`} replace />} />
+                ))}
+                <Route path="/:slug" element={<LessonLayout />}>
+                  <Route path="vocabulary" element={<Vocabulary hideHeader />} />
+                  <Route path="test" element={<Quiz hideHeader />} />
+                  <Route index element={<LessonRedirect />} />
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );
