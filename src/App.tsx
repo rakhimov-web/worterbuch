@@ -58,13 +58,13 @@ export function App() {
         </Link>
         <div className="topbar-badge" title="Dars darajasi">
           <Flame size={18} color="#f59e0b" aria-hidden="true" />
-          <span>A1.1 Kursi</span>
+          <span>Nemis tili</span>
         </div>
       </header>
       <main id="main">
         <motion.div
           key={transitionKey}
-          initial={reduce ? false : { opacity: 0 }}
+          initial={false}
           animate={{ opacity: 1 }}
           transition={{ duration: reduce ? 0 : 0.15 }}
         >

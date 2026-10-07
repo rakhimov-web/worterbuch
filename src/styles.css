@@ -83,7 +83,7 @@ body {
   font: 700 17px/1.45 var(--font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizeSpeed;
   min-height: 100dvh;
   touch-action: manipulation;
   overscroll-behavior-y: none;
@@ -1176,6 +1176,8 @@ input[type="search"]::-webkit-search-results-decoration {
   border-radius: 22px;
   margin-bottom: 22px;
   overflow: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .hero-card-body {
