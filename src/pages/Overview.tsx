@@ -22,29 +22,51 @@ export function Overview() {
   const lastVisitedSlug = (typeof window !== 'undefined' && localStorage.getItem('last_visited_lesson')) || lessons[0].slug;
   const activeLesson = lessons.find((l) => l.slug === lastVisitedSlug) || lessons[0];
 
-  // Compute statistics for active lesson
-  const validIds = new Set(activeLesson.entries.map((e) => e.id));
-  const learnedCount = (state.lessons[activeLesson.slug]?.learned ?? []).filter((id) => validIds.has(id)).length;
-  const difficultCount = (state.lessons[activeLesson.slug]?.difficult ?? []).filter((id) => validIds.has(id)).length;
-  const totalWords = activeLesson.entries.length;
+  // Overall course statistics across all lessons
+  const totalWords = lessons.reduce((acc, l) => acc + l.entries.length, 0);
+  const learnedCount = lessons.reduce((acc, l) => {
+    const valid = new Set(l.entries.map((e) => e.id));
+    return acc + (state.lessons[l.slug]?.learned ?? []).filter((id) => valid.has(id)).length;
+  }, 0);
+  const difficultCount = lessons.reduce((acc, l) => {
+    const valid = new Set(l.entries.map((e) => e.id));
+    return acc + (state.lessons[l.slug]?.difficult ?? []).filter((id) => valid.has(id)).length;
+  }, 0);
+
   const progressPct = totalWords > 0 ? Math.round((learnedCount / totalWords) * 100) : 0;
   const difficultPct = totalWords > 0 ? Math.round((difficultCount / totalWords) * 100) : 0;
 
-  // Determine resume state
-  const isCompleted = learnedCount === totalWords && totalWords > 0;
-  const isStarted = learnedCount > 0 && !isCompleted;
+  // Active lesson stats for resume card
+  const activeValidIds = new Set(activeLesson.entries.map((e) => e.id));
+  const activeLearned = (state.lessons[activeLesson.slug]?.learned ?? []).filter((id) => activeValidIds.has(id)).length;
+  const activeTotal = activeLesson.entries.length;
+  const isActiveCompleted = activeLearned === activeTotal && activeTotal > 0;
+  const isActiveStarted = activeLearned > 0 && !isActiveCompleted;
+  const isAllCompleted = learnedCount === totalWords && totalWords > 0;
 
-  const resumeBadge = isCompleted ? 'Mustahkamlang 🎉' : isStarted ? 'Davom ettirish' : 'Boshlash';
-  const resumeHeadline = isCompleted
+  const resumeBadge = isAllCompleted
+    ? 'Kurs yakunlandi 🎉'
+    : isActiveCompleted
+    ? 'Mustahkamlang 🎉'
+    : isActiveStarted
+    ? 'Davom ettirish'
+    : 'Boshlash';
+
+  const resumeHeadline = isAllCompleted
+    ? 'Goethe A1.1 kursi to‘liq o‘zlashtirildi!'
+    : isActiveCompleted
     ? `${activeLesson.title} — Bilimingizni mustahkamlang`
-    : isStarted
+    : isActiveStarted
     ? `${activeLesson.title} — O‘rganishda davom eting`
     : `${activeLesson.title} — O‘rganishni boshlang`;
-  const resumeSubtitle = isCompleted
-    ? 'Barcha so‘zlar yodlangan, testda o‘zingizni sinang!'
-    : isStarted
-    ? `${learnedCount} ta so‘z yodlandi · yana ${totalWords - learnedCount} ta qoldi`
-    : `${totalWords} ta muhim boshlang‘ich so‘z va iboralar`;
+
+  const resumeSubtitle = isAllCompleted
+    ? `Barcha ${totalWords} ta so‘z yodlangan, testlarda o‘zingizni sinang!`
+    : isActiveCompleted
+    ? `${activeTotal} ta so‘z to‘liq yodlangan, testda o‘zingizni sinang!`
+    : isActiveStarted
+    ? `${activeLearned} / ${activeTotal} ta so‘z yodlandi · yana ${activeTotal - activeLearned} ta qoldi`
+    : `${activeTotal} ta muhim boshlang‘ich so‘z va iboralar`;
 
   return (
     <>
@@ -95,7 +117,7 @@ export function Overview() {
           <div className="stat-info">
             <span className="stat-label">Yodlangan</span>
             <span className="stat-value">{learnedCount} ta</span>
-            <span className="stat-sub">faol xotirada</span>
+            <span className="stat-sub">barcha darslardan</span>
           </div>
         </div>
 

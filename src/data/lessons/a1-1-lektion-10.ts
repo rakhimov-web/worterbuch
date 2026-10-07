@@ -80,7 +80,7 @@ export const lektion10: Lesson = {
     w(62, 'beginnen', 'boshlanmoq', 'beginnen', 'verb'),
     w(63, 'stehen', 'turmoq', 'shteen', 'verb'),
     w(64, 'der Ausgang, -¨e', 'chiqish', 'der aus-gang', 'noun'),
-    w(65, 'nächst-', 'keyingi', 'nexst', 'adjective'),
+    w(65, 'nächst-', 'keyingi', 'nexst', 'adjective', 'nächst'),
     w(66, 'der Halt, -e', 'to‘xtash joyi', 'der halt', 'noun'),
     w(67, 'der Hauptbahnhof, -¨e', 'markaziy vokzal', 'der haupt-ban-hof', 'noun'),
     w(68, 'die Vorsicht (Sg.)', 'ehtiyotlik', 'di forzixt', 'noun', 'die Vorsicht'),
