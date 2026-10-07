@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* ==========================================================================
    Wörterbuch — German Primary Design System (Duolingo 3D Sticker Precision)
    German Royal Blue Primary · Pure White Paper · Nunito · Strict Width 100%
@@ -1159,49 +1161,34 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 /* ==========================================================================
-   Smooth Skeleton Loader (Harmonious Soft Light Blue Palette)
+   Minimalist Skeleton Loader (shadcn / Linear Clean Aesthetic)
    ========================================================================== */
 
-@keyframes skeletonPulse {
+@keyframes pulse {
   0%, 100% {
     opacity: 1;
   }
   50% {
-    opacity: 0.62;
+    opacity: 0.45;
   }
 }
 
-.sk-pulse {
-  animation: skeletonPulse 1.5s ease-in-out infinite;
-  will-change: opacity;
+.animate-pulse {
+  animation: pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sk-pulse {
+  .animate-pulse {
     animation: none;
   }
 }
 
+.bg-muted {
+  background-color: #f1f5f9;
+}
+
 .skeleton-flow {
   width: 100%;
-}
-
-.sk-card-surface {
-  background: #edf5ff !important;
-  border-color: #bfdbfe !important;
-  border-bottom-color: #93c5fd !important;
-}
-
-.sk-bar-strong {
-  background: #93c5fd !important;
-}
-
-.sk-bar-med {
-  background: #bfdbfe !important;
-}
-
-.sk-bar-light {
-  background: #dbeafe !important;
 }
 
 /* ==========================================================================
