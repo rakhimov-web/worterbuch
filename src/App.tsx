@@ -8,6 +8,9 @@ import { Quiz } from './pages/Quiz';
 import { NotFound } from './pages/NotFound';
 import { LessonLayout } from './pages/LessonLayout';
 import { OverviewSkeleton } from './components/OverviewSkeleton';
+import { VocabularySkeleton } from './components/VocabularySkeleton';
+import { QuizSkeleton } from './components/QuizSkeleton';
+import { TopbarSkeleton } from './components/TopbarSkeleton';
 import { lessons, getLesson } from './data';
 
 const isTestEnv =
@@ -35,13 +38,23 @@ function LessonRedirect() {
   return lesson ? <Navigate to={`/${lesson.slug}/vocabulary`} replace /> : <NotFound />;
 }
 
+function getPageSkeleton(path: string) {
+  if (path.endsWith('/test')) {
+    return <QuizSkeleton />;
+  }
+  if (path.length > 1 && path !== '/') {
+    return <VocabularySkeleton />;
+  }
+  return <OverviewSkeleton />;
+}
+
 export function App() {
   const { pathname } = useLocation();
   const reduce = useReducedMotion();
   const first = useRef(true);
   const initialBootDone = useRef(false);
 
-  // Gated initial skeleton: stays visible for ~520ms so user clearly perceives the smooth state
+  // Gated initial skeleton: stays visible for ~450ms so user clearly perceives the smooth state
   const [loadingInitial, setLoadingInitial] = useState(() => !isTestEnv);
 
   useEffect(() => {
@@ -61,11 +74,11 @@ export function App() {
       }
     };
 
-    // Noticeable display duration (~520ms) so skeleton is visibly appreciated without dragging
+    // Noticeable display duration (~450ms) so skeleton is visibly appreciated without dragging
     const timer = setTimeout(() => {
       minTimePassed = true;
       finalize();
-    }, 520);
+    }, 450);
 
     if (typeof document !== 'undefined' && document.fonts?.ready) {
       document.fonts.ready
@@ -87,7 +100,7 @@ export function App() {
         initialBootDone.current = true;
         setLoadingInitial(false);
       }
-    }, 900);
+    }, 850);
 
     return () => {
       active = false;
@@ -112,52 +125,62 @@ export function App() {
   return (
     <div className="shell">
       <a className="skip" href="#main">Asosiy qismga o‘tish</a>
-      <header className="topbar">
-        <Link to="/" className="brand" aria-label="Bosh sahifa: Nemis tili lug‘ati">
-          <Mark />
-          <span className="brand-title">Wörterbuch</span>
-        </Link>
-        <div className="topbar-badge" title="Dars darajasi">
-          <Flame size={18} color="#f59e0b" aria-hidden="true" />
-          <span>Nemis tili</span>
-        </div>
-      </header>
-      <main id="main">
-        <AnimatePresence mode="wait">
-          {loadingInitial && pathname === '/' ? (
-            <motion.div
-              key="skeleton"
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: reduce ? 0 : 0.24, ease: 'easeInOut' }}
-              style={{ width: '100%' }}
-            >
-              <OverviewSkeleton />
-            </motion.div>
-          ) : (
-            <motion.div
-              key={transitionKey}
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: reduce ? 0 : 0.22, ease: 'easeOut' }}
-              style={{ width: '100%' }}
-            >
-              <Routes>
-                <Route path="/" element={<Overview />} />
-                {lessons.map((l) => (
-                  <Route key={l.slug} path={`/${l.slug}`} element={<Navigate to={`/${l.slug}/vocabulary`} replace />} />
-                ))}
-                <Route path="/:slug" element={<LessonLayout />}>
-                  <Route path="vocabulary" element={<Vocabulary hideHeader />} />
-                  <Route path="test" element={<Quiz hideHeader />} />
-                  <Route index element={<LessonRedirect />} />
-                </Route>
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
+      <AnimatePresence mode="wait">
+        {loadingInitial ? (
+          <motion.div
+            key="initial-skeleton-gate"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduce ? 0 : 0.22, ease: 'easeOut' }}
+            style={{ width: '100%' }}
+          >
+            <TopbarSkeleton />
+            <main id="main">
+              {getPageSkeleton(pathname)}
+            </main>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="main-app-content"
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: reduce ? 0 : 0.22, ease: 'easeOut' }}
+            style={{ width: '100%' }}
+          >
+            <header className="topbar">
+              <Link to="/" className="brand" aria-label="Bosh sahifa: Nemis tili lug‘ati">
+                <Mark />
+                <span className="brand-title">Wörterbuch</span>
+              </Link>
+              <div className="topbar-badge" title="Dars darajasi">
+                <Flame size={18} color="#f59e0b" aria-hidden="true" />
+                <span>Nemis tili</span>
+              </div>
+            </header>
+            <main id="main">
+              <motion.div
+                key={transitionKey}
+                initial={false}
+                animate={{ opacity: 1 }}
+                transition={{ duration: reduce ? 0 : 0.15 }}
+              >
+                <Routes>
+                  <Route path="/" element={<Overview />} />
+                  {lessons.map((l) => (
+                    <Route key={l.slug} path={`/${l.slug}`} element={<Navigate to={`/${l.slug}/vocabulary`} replace />} />
+                  ))}
+                  <Route path="/:slug" element={<LessonLayout />}>
+                    <Route path="vocabulary" element={<Vocabulary hideHeader />} />
+                    <Route path="test" element={<Quiz hideHeader />} />
+                    <Route index element={<LessonRedirect />} />
+                  </Route>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </motion.div>
+            </main>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
