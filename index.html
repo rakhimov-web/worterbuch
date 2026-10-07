@@ -89,6 +89,125 @@
           animation: none;
         }
       }
+
+      /* Responsive Skeleton Classes (matching styles.css) */
+      .sk-shell {
+        max-width: 840px;
+        margin: 0 auto;
+        padding: 0 20px;
+        min-height: 100dvh;
+        box-sizing: border-box;
+        font-family: Rubik, system-ui, -apple-system, sans-serif;
+      }
+      .sk-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 0;
+        border-bottom: 2px solid #e2e8f0;
+        margin-bottom: 24px;
+      }
+      .sk-brand-icon { width: 42px; height: 42px; }
+      .sk-hero-art { width: 125px; height: 110px; }
+      .sk-stats-grid { display: flex; gap: 12px; width: 100%; margin-top: 20px; margin-bottom: 24px; }
+      .sk-stat-item {
+        flex: 1;
+        border-radius: 18px;
+        background: #ffffff;
+        border: 2px solid #e2e8f0;
+        border-bottom: 4px solid #cbd5e1;
+        box-sizing: border-box;
+        padding: 18px 16px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 14px;
+      }
+      .sk-stat-circle { width: 68px; height: 68px; border-radius: 50%; background: #f1f5f9; flex-shrink: 0; }
+      .sk-resume-arrow { width: 52px; height: 52px; }
+      .sk-lesson-icon { width: 52px; height: 52px; }
+      .sk-lesson-link { padding: 20px 24px; min-height: 84px; }
+      .sk-word {
+        background: #ffffff;
+        min-height: 84px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 18px 22px;
+        border-radius: 20px;
+        border: 2px solid #e2e8f0;
+        border-bottom: 4px solid #cbd5e1;
+        box-sizing: border-box;
+        margin-bottom: 12px;
+      }
+      .sk-word-content { flex: 1; min-width: 0; }
+      .sk-row-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+      .sk-icon-btn { width: 44px; height: 44px; }
+      .sk-input { height: 52px; }
+      .sk-pill { height: 44px; }
+      .sk-btn { height: 52px; }
+      .sk-seg-control { min-height: 54px; }
+      .sk-bar { height: 16px; }
+
+      @media (max-width: 640px) {
+        .sk-shell { padding: 0 18px; }
+        .sk-topbar { padding: 14px 0; margin-bottom: 22px; }
+        .sk-brand-icon { width: 36px; height: 36px; }
+        .sk-hero-art { width: 95px; height: 85px; }
+        .sk-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .sk-stat-item {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          padding: 14px 8px;
+          gap: 8px;
+          border-radius: 16px;
+          border-width: 1.5px;
+          border-bottom-width: 3px;
+        }
+        .sk-stat-circle { width: 46px; height: 46px; }
+        .sk-resume-arrow { width: 40px; height: 40px; }
+        .sk-lesson-icon { width: 42px; height: 42px; border-radius: 13px; }
+        .sk-lesson-link { padding: 14px 16px; min-height: 64px; }
+        .sk-word {
+          flex-direction: column !important;
+          align-items: stretch !important;
+          padding: 16px 16px 14px !important;
+          gap: 12px !important;
+          border-radius: 18px !important;
+          border-width: 1.5px !important;
+          border-bottom-width: 3.5px !important;
+          min-height: auto !important;
+        }
+        .sk-word-content { width: 100% !important; }
+        .sk-row-actions {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: flex-end !important;
+          gap: 8px !important;
+          margin-top: 2px !important;
+          padding-top: 11px !important;
+          border-top: 1.5px solid #f1f5f9 !important;
+          width: 100% !important;
+        }
+        .sk-icon-btn { width: 42px !important; height: 42px !important; border-radius: 13px !important; }
+        .sk-input { height: 46px !important; }
+        .sk-pill { height: 40px !important; }
+        .sk-btn { height: 46px !important; }
+        .sk-seg-control { min-height: 48px !important; }
+        .sk-bar { height: 12px !important; }
+      }
+
+      @media (max-width: 420px) {
+        .sk-shell { padding: 0 14px; }
+        .sk-hero-art { width: 82px; height: 74px; }
+        .sk-stats-grid { gap: 7px; }
+        .sk-stat-item { padding: 12px 6px; gap: 6px; }
+        .sk-resume-arrow { width: 36px; height: 36px; }
+        .sk-word { padding: 14px 14px 12px !important; gap: 10px !important; }
+      }
     </style>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -96,48 +215,11 @@
   </head>
   <body>
     <div id="root">
-      <div
-        class="animate-pulse"
-        style="
-          max-width: 840px;
-          margin: 0 auto;
-          padding: 0 20px;
-          min-height: 100dvh;
-          box-sizing: border-box;
-          font-family:
-            Rubik,
-            system-ui,
-            -apple-system,
-            sans-serif;
-        "
-      >
-        <header
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 0;
-            border-bottom: 2px solid #e2e8f0;
-            margin-bottom: 24px;
-          "
-        >
+      <div class="animate-pulse sk-shell">
+        <header class="sk-topbar">
           <div style="display: flex; align-items: center; gap: 12px">
-            <div
-              style="
-                width: 42px;
-                height: 42px;
-                border-radius: 12px;
-                background: #f1f5f9;
-              "
-            ></div>
-            <div
-              style="
-                width: 140px;
-                height: 26px;
-                border-radius: 8px;
-                background: #f1f5f9;
-              "
-            ></div>
+            <div class="sk-brand-icon" style="border-radius: 12px; background: #f1f5f9"></div>
+            <div style="width: 140px; height: 26px; border-radius: 8px; background: #f1f5f9"></div>
           </div>
           <div
             style="
@@ -173,7 +255,7 @@
                   '<div style="width: 90px; height: 16px; border-radius: 6px; background: #f1f5f9"></div>' +
                 '</div>' +
                 '<div style="width: 240px; max-width: 80%; height: 32px; border-radius: 8px; background: #f1f5f9; margin-bottom: 16px"></div>' +
-                '<div style="display: flex; background: #f1f5f9; border-radius: 12px; padding: 4px; border: 1.5px solid #e2e8f0; border-bottom: 3px solid #cbd5e1">' +
+                '<div class="sk-seg-control" style="display: flex; background: #f1f5f9; border-radius: 14px; padding: 4px; border: 1.5px solid #e2e8f0; border-bottom: 3px solid #cbd5e1; box-sizing: border-box">' +
                   '<div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 8px 0">' +
                     '<div style="width: 60px; height: 16px; border-radius: 4px; background: #ffffff"></div>' +
                   '</div>' +
@@ -186,34 +268,34 @@
                     '<div style="width: 120px; height: 14px; border-radius: 4px; background: #f1f5f9"></div>' +
                     '<div style="width: 36px; height: 14px; border-radius: 4px; background: #f1f5f9"></div>' +
                   '</div>' +
-                  '<div style="width: 100%; height: 12px; border-radius: 9999px; background: #f1f5f9; overflow: hidden"></div>' +
+                  '<div class="sk-bar" style="width: 100%; border-radius: 9999px; background: #f1f5f9; overflow: hidden"></div>' +
                 '</div>' +
               '</div>';
 
             if (isQuiz) {
               m.innerHTML = lessonHeaderHtml +
-                '<div style="background: #ffffff; border-radius: 20px; border: 2px solid #e2e8f0; border-bottom: 4px solid #cbd5e1; padding: 24px; box-sizing: border-box; margin-top: 24px">' +
-                  '<div style="width: 120px; height: 18px; border-radius: 6px; background: #f1f5f9; margin-bottom: 12px"></div>' +
+                '<div style="margin-top: 24px; width: 100%">' +
+                  '<div style="margin-bottom: 10px"><div style="width: 120px; height: 18px; border-radius: 6px; background: #f1f5f9"></div></div>' +
                   '<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px">' +
-                    '<div style="width: 130px; height: 42px; border-radius: 12px; background: #f1f5f9"></div>' +
-                    '<div style="width: 140px; height: 42px; border-radius: 12px; background: #f1f5f9"></div>' +
-                    '<div style="width: 120px; height: 42px; border-radius: 12px; background: #f1f5f9"></div>' +
+                    '<div class="sk-pill" style="width: 130px; border-radius: 14px; background: #f1f5f9"></div>' +
+                    '<div class="sk-pill" style="width: 140px; border-radius: 14px; background: #f1f5f9"></div>' +
+                    '<div class="sk-pill" style="width: 120px; border-radius: 14px; background: #f1f5f9"></div>' +
                   '</div>' +
-                  '<div style="width: 110px; height: 18px; border-radius: 6px; background: #f1f5f9; margin-bottom: 12px"></div>' +
+                  '<div style="margin-bottom: 10px"><div style="width: 110px; height: 18px; border-radius: 6px; background: #f1f5f9"></div></div>' +
                   '<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px">' +
-                    '<div style="width: 110px; height: 42px; border-radius: 12px; background: #f1f5f9"></div>' +
-                    '<div style="width: 130px; height: 42px; border-radius: 12px; background: #f1f5f9"></div>' +
-                    '<div style="width: 130px; height: 42px; border-radius: 12px; background: #f1f5f9"></div>' +
+                    '<div class="sk-pill" style="width: 110px; border-radius: 14px; background: #f1f5f9"></div>' +
+                    '<div class="sk-pill" style="width: 130px; border-radius: 14px; background: #f1f5f9"></div>' +
+                    '<div class="sk-pill" style="width: 130px; border-radius: 14px; background: #f1f5f9"></div>' +
                   '</div>' +
                   '<div style="width: 220px; max-width: 85%; height: 16px; border-radius: 6px; background: #f1f5f9; margin-bottom: 20px"></div>' +
-                  '<div style="width: 100%; height: 48px; border-radius: 16px; background: #f1f5f9"></div>' +
+                  '<div class="sk-btn" style="width: 100%; border-radius: 16px; background: #f1f5f9"></div>' +
                 '</div>';
             } else if (isLesson) {
               var wordsHtml = '';
               for (var i = 0; i < 4; i++) {
                 wordsHtml +=
-                  '<div style="background: #ffffff; min-height: 104px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; border-radius: 18px; border: 2px solid #e2e8f0; border-bottom: 4px solid #cbd5e1; box-sizing: border-box; margin-bottom: 12px">' +
-                    '<div style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0">' +
+                  '<div class="sk-word">' +
+                    '<div class="sk-word-content" style="display: flex; flex-direction: column; gap: 8px; min-width: 0">' +
                       '<div style="display: flex; align-items: center; gap: 8px">' +
                         '<div style="width: 48px; height: 24px; border-radius: 8px; background: #f1f5f9"></div>' +
                         '<div style="width: 140px; height: 24px; border-radius: 6px; background: #f1f5f9"></div>' +
@@ -221,30 +303,30 @@
                       '<div style="width: 190px; max-width: 80%; height: 18px; border-radius: 6px; background: #f1f5f9"></div>' +
                       '<div style="width: 96px; height: 14px; border-radius: 6px; background: #f1f5f9"></div>' +
                     '</div>' +
-                    '<div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0">' +
-                      '<div style="width: 40px; height: 40px; border-radius: 12px; background: #f1f5f9"></div>' +
-                      '<div style="width: 40px; height: 40px; border-radius: 12px; background: #f1f5f9"></div>' +
-                      '<div style="width: 40px; height: 40px; border-radius: 12px; background: #f1f5f9"></div>' +
+                    '<div class="sk-row-actions">' +
+                      '<div class="sk-icon-btn" style="border-radius: 12px; background: #f1f5f9"></div>' +
+                      '<div class="sk-icon-btn" style="border-radius: 12px; background: #f1f5f9"></div>' +
+                      '<div class="sk-icon-btn" style="border-radius: 12px; background: #f1f5f9"></div>' +
                     '</div>' +
                   '</div>';
               }
               m.innerHTML = lessonHeaderHtml +
-                '<div style="width: 100%; height: 48px; border-radius: 16px; background: #ffffff; border: 2px solid #e2e8f0; border-bottom: 3px solid #cbd5e1; margin-top: 20px; box-sizing: border-box"></div>' +
+                '<div class="sk-input" style="width: 100%; border-radius: 16px; background: #ffffff; border: 2px solid #e2e8f0; border-bottom: 3px solid #cbd5e1; margin-top: 20px; box-sizing: border-box"></div>' +
                 '<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; margin-bottom: 20px; flex-wrap: wrap">' +
                   '<div style="display: flex; gap: 8px">' +
-                    '<div style="width: 90px; height: 36px; border-radius: 9999px; background: #f1f5f9"></div>' +
-                    '<div style="width: 100px; height: 36px; border-radius: 9999px; background: #f1f5f9"></div>' +
-                    '<div style="width: 90px; height: 36px; border-radius: 9999px; background: #f1f5f9"></div>' +
+                    '<div class="sk-pill" style="width: 90px; border-radius: 9999px; background: #f1f5f9"></div>' +
+                    '<div class="sk-pill" style="width: 100px; border-radius: 9999px; background: #f1f5f9"></div>' +
+                    '<div class="sk-pill" style="width: 90px; border-radius: 9999px; background: #f1f5f9"></div>' +
                   '</div>' +
-                  '<div style="width: 120px; height: 36px; border-radius: 12px; background: #f1f5f9"></div>' +
+                  '<div class="sk-pill" style="width: 120px; border-radius: 12px; background: #f1f5f9"></div>' +
                 '</div>' +
                 '<div>' + wordsHtml + '</div>';
             } else {
               var statsHtml = '';
               for (var s = 0; s < 3; s++) {
                 statsHtml +=
-                  '<div style="flex: 1; min-height: 94px; border-radius: 18px; background: #ffffff; border: 2px solid #e2e8f0; border-bottom: 4px solid #cbd5e1; box-sizing: border-box; padding: 18px 16px; display: flex; align-items: center; gap: 14px">' +
-                    '<div style="width: 48px; height: 48px; border-radius: 50%; background: #f1f5f9; flex-shrink: 0"></div>' +
+                  '<div class="sk-stat-item">' +
+                    '<div class="sk-stat-circle"></div>' +
                     '<div style="display: flex; flex-direction: column; gap: 6px; flex: 1">' +
                       '<div style="width: 68px; height: 12px; border-radius: 4px; background: #f1f5f9"></div>' +
                       '<div style="width: 46px; height: 20px; border-radius: 6px; background: #f1f5f9"></div>' +
@@ -255,19 +337,21 @@
               var lessonsListHtml = '';
               for (var l = 0; l < 3; l++) {
                 lessonsListHtml +=
-                  '<div style="width: 100%; min-height: 78px; border-radius: 18px; background: #ffffff; border: 2px solid #e2e8f0; border-bottom: 4px solid #cbd5e1; box-sizing: border-box; padding: 16px 20px; display: flex; align-items: center; gap: 16px; margin-bottom: 12px">' +
-                    '<div style="width: 44px; height: 44px; border-radius: 14px; background: #f1f5f9; flex-shrink: 0"></div>' +
-                    '<div style="flex: 1; display: flex; flex-direction: column; gap: 6px">' +
-                      '<div style="width: 160px; max-width: 80%; height: 18px; border-radius: 6px; background: #f1f5f9"></div>' +
-                      '<div style="display: flex; gap: 8px; align-items: center">' +
-                        '<div style="width: 44px; height: 16px; border-radius: 6px; background: #f1f5f9"></div>' +
-                        '<div style="width: 110px; height: 12px; border-radius: 4px; background: #f1f5f9"></div>' +
+                  '<div style="width: 100%; border-radius: 18px; background: #ffffff; border: 2px solid #e2e8f0; border-bottom: 4px solid #cbd5e1; box-sizing: border-box; margin-bottom: 12px">' +
+                    '<div class="sk-lesson-link" style="display: flex; align-items: center; gap: 16px; box-sizing: border-box">' +
+                      '<div class="sk-lesson-icon" style="border-radius: 14px; background: #f1f5f9; flex-shrink: 0"></div>' +
+                      '<div style="flex: 1; display: flex; flex-direction: column; gap: 6px">' +
+                        '<div style="width: 160px; max-width: 80%; height: 18px; border-radius: 6px; background: #f1f5f9"></div>' +
+                        '<div style="display: flex; gap: 8px; align-items: center">' +
+                          '<div style="width: 44px; height: 16px; border-radius: 6px; background: #f1f5f9"></div>' +
+                          '<div style="width: 110px; height: 12px; border-radius: 4px; background: #f1f5f9"></div>' +
+                        '</div>' +
                       '</div>' +
                     '</div>' +
                   '</div>';
               }
               m.innerHTML =
-                '<div style="width: 100%; min-height: 124px; border-radius: 22px; background: #ffffff; border: 2px solid #e2e8f0; border-bottom: 4px solid #cbd5e1; box-sizing: border-box; padding: 22px 24px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px">' +
+                '<div style="width: 100%; border-radius: 22px; background: #ffffff; border: 2px solid #e2e8f0; border-bottom: 4px solid #cbd5e1; box-sizing: border-box; padding: 22px 24px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px">' +
                   '<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">' +
                     '<div style="display: flex; align-items: center; gap: 8px">' +
                       '<div style="width: 105px; height: 14px; border-radius: 4px; background: #f1f5f9"></div>' +
@@ -283,18 +367,18 @@
                       '<div style="width: 80px; height: 13px; border-radius: 4px; background: #f1f5f9"></div>' +
                     '</div>' +
                   '</div>' +
-                  '<div style="width: 95px; height: 85px; border-radius: 18px; background: #f1f5f9; flex-shrink: 0"></div>' +
+                  '<div class="sk-hero-art" style="border-radius: 18px; background: #f1f5f9; flex-shrink: 0"></div>' +
                 '</div>' +
-                '<div style="display: flex; gap: 12px; width: 100%; margin-top: 20px; margin-bottom: 24px">' +
+                '<div class="sk-stats-grid">' +
                   statsHtml +
                 '</div>' +
-                '<div style="width: 100%; min-height: 110px; border-radius: 22px; background: #ffffff; border: 2px solid #e2e8f0; border-bottom: 4px solid #cbd5e1; box-sizing: border-box; margin-top: 24px; margin-bottom: 28px; padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px">' +
+                '<div style="width: 100%; border-radius: 22px; background: #ffffff; border: 2px solid #e2e8f0; border-bottom: 4px solid #cbd5e1; box-sizing: border-box; margin-top: 24px; margin-bottom: 28px; padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px">' +
                   '<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">' +
                     '<div style="width: 110px; height: 24px; border-radius: 12px; background: #f1f5f9"></div>' +
                     '<div style="width: 280px; max-width: 85%; height: 24px; border-radius: 6px; background: #f1f5f9"></div>' +
                     '<div style="width: 200px; max-width: 70%; height: 14px; border-radius: 4px; background: #f1f5f9"></div>' +
                   '</div>' +
-                  '<div style="width: 40px; height: 40px; border-radius: 12px; background: #f1f5f9; flex-shrink: 0"></div>' +
+                  '<div class="sk-resume-arrow" style="border-radius: 12px; background: #f1f5f9; flex-shrink: 0"></div>' +
                 '</div>' +
                 '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; margin-top: 24px">' +
                   '<div style="width: 140px; height: 24px; border-radius: 6px; background: #f1f5f9"></div>' +
