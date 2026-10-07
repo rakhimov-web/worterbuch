@@ -216,6 +216,12 @@ export function Overview() {
                           : `${l.entries.length} ta so‘z · ${learned} tasi yodlangan`}
                       </span>
                     </div>
+                    <div className="lesson-mini-progress" aria-hidden="true">
+                      <div
+                        className={`lesson-mini-bar ${pct === 100 ? 'is-complete' : ''}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
                   </div>
                   <ChevronRight aria-hidden="true" className="lesson-chevron" />
                 </Link>

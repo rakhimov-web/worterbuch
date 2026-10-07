@@ -78,6 +78,13 @@ export function Flashcards({
         <span>Aylantirish uchun ustiga bosing</span>
       </div>
 
+      <div className="flashcard-deck-progress" aria-hidden="true">
+        <div
+          className="flashcard-deck-bar"
+          style={{ width: `${((index + 1) / entries.length) * 100}%` }}
+        />
+      </div>
+
       <div className="flashcard-stage">
         <div
           className={`flashcard${flipped ? ' is-flipped' : ''}`}
