@@ -1,11 +1,30 @@
 import { Link } from 'react-router-dom';
-import { ChevronRight, Award, ArrowRight, CheckCircle2, Check, Sparkles, BookOpen, TrendingUp } from 'lucide-react';
+import { ChevronRight, Award, ArrowRight, CheckCircle2, Check, Sparkles, BookOpen, TrendingUp, Volume2 } from 'lucide-react';
 import { levelLabel, lessons } from '../data';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useSyncExternalStore, useState, useEffect } from 'react';
 import { progressStore } from '../lib/progress';
 import { CircularProgress } from '@/components/ui/circular-progress';
 import { Badge } from '@/components/ui/badge';
+
+function GermanyFlag() {
+  return (
+    <span className="de-flag-pill" aria-hidden="true">
+      <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg" className="de-flag-svg">
+        <defs>
+          <clipPath id="hero-de-flag-clip">
+            <rect width="18" height="13" rx="2.5" />
+          </clipPath>
+        </defs>
+        <g clipPath="url(#hero-de-flag-clip)">
+          <rect width="18" height="4.33" fill="#18181b" />
+          <rect y="4.33" width="18" height="4.34" fill="#dc2626" />
+          <rect y="8.67" width="18" height="4.33" fill="#fbbf24" />
+        </g>
+      </svg>
+    </span>
+  );
+}
 
 export function Overview() {
   usePageTitle(`${levelLabel} darslari · Wörterbuch`);
@@ -72,15 +91,39 @@ export function Overview() {
     <>
       {/* Header & Level Info */}
       <div className="overview-header">
-        <p className="eyebrow">
-          <span>Nemis tili kursi</span>
-          <span>·</span>
-          <span>Goethe A1.1</span>
-        </p>
-        <h1 className="page-title" tabIndex={-1}>
-          <span className="chip-lime">{levelLabel}</span> darajasi
+        <div className="hero-eyebrow-badge">
+          <GermanyFlag />
+          <span className="hero-eyebrow-text">Nemis tili kursi · Goethe A1.1</span>
+          <span className="hero-live-indicator" aria-hidden="true">
+            <span className="hero-live-dot" />
+          </span>
+        </div>
+
+        <h1 className="hero-page-title" tabIndex={-1}>
+          <span className="hero-level-chip">
+            <span className="hero-level-chip-label">{levelLabel}</span>
+          </span>
+          <span className="hero-title-text">darajasi</span>
         </h1>
-        <p className="lede">Darslikdagi so‘zlarni yodlang: talaffuz, audio va test bilan.</p>
+
+        <p className="hero-lede">
+          Darslikdagi so‘zlarni yodlang: talaffuz, audio va test bilan.
+        </p>
+
+        <div className="hero-feature-tags" role="list" aria-label="Kurs imkoniyatlari">
+          <div className="hero-feature-tag" role="listitem">
+            <Volume2 size={13} className="hero-feature-icon icon-audio" aria-hidden="true" />
+            <span>Nemischa audio</span>
+          </div>
+          <div className="hero-feature-tag" role="listitem">
+            <BookOpen size={13} className="hero-feature-icon icon-words" aria-hidden="true" />
+            <span>{totalWords} ta so‘z</span>
+          </div>
+          <div className="hero-feature-tag" role="listitem">
+            <Sparkles size={13} className="hero-feature-icon icon-quiz" aria-hidden="true" />
+            <span>{lessons.length} ta dars & test</span>
+          </div>
+        </div>
       </div>
 
       {/* Overview Statistics (Display Flex 3-column row) */}
